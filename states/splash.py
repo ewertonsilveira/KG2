@@ -2,13 +2,20 @@ import pygame
 from .base import BaseState
 
 tenSeconds = 15000 * 1000
-initialRotation = 35
+initialRotation = 60
 class Splash(BaseState):
     def __init__(self):
         super(Splash, self).__init__()
-        self.title = self.font.render("Welcome to Kylie's Game", True, pygame.Color("blue"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        self.logo_sf = pygame.image.load('public/graphics/logo.png').convert_alpha()
+        x,y = self.screen_rect.center
+        self.title = self.font.render("KYLIE'S GAME", True, pygame.Color("black"))
+        self.title_rect = self.title.get_rect(center=(x+15,y+20))
+
+        logo = pygame.image.load('public/graphics/logo.png').convert_alpha()
+        self.logo_sf = pygame.transform.scale(logo, (100,115))
+ 
+        bg = pygame.image.load('public/graphics/bg.png').convert_alpha()
+        self.bg_sf = pygame.transform.scale(bg, self.screen_rect.size)
+
         self.next_state = "MENU"
         self.time_active = 0
         self.rotation = initialRotation
@@ -31,7 +38,9 @@ class Splash(BaseState):
                 self.quit = True
 
     def draw(self, surface):
-        surface.fill(pygame.Color("black"))
+        
+        surface.fill(pygame.Color("lightblue"))
+        surface.blit(self.bg_sf, (0,0))
             
         if self.rotation >= initialRotation:
             self.incrementalValue = -1
@@ -41,9 +50,9 @@ class Splash(BaseState):
 
         self.rotation += self.incrementalValue
 
-        logo = pygame.transform.scale(self.logo_sf, (90,105))
-        logo = pygame.transform.rotate(logo, self.rotation)
-        logo_rect = self.logo_sf.get_rect(center=self.screen_rect.center)
-
+        logo = pygame.transform.rotate(self.logo_sf, self.rotation)
+        
+        x,y = self.screen_rect.center
+        logo_rect = logo.get_rect(center=(x,y-55))
         surface.blit(logo, logo_rect)
         surface.blit(self.title, self.title_rect)

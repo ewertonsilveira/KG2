@@ -33,6 +33,8 @@ class Menu(BaseState):
                 self.active_index = 0 if self.active_index >= 1 else 1
             elif event.key == pygame.K_RETURN:
                 self.handle_action()
+            elif event.key == pygame.K_SPACE:
+                self.handle_action()
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
