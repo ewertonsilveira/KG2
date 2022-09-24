@@ -8,7 +8,7 @@ from game import Game
 from collections import namedtuple
 
 Size = namedtuple('Size',"width height")
-ScreenSize = Size(1920, 1080)
+ScreenSize = Size(800, 400)
 
 pygame.init()
 screen = pygame.display.set_mode(ScreenSize)
