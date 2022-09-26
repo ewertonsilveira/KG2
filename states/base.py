@@ -21,6 +21,9 @@ class BaseState(object):
     def draw(self, surface):
         pass
     
-    def draw_text(text, font, text_color, x, y):
+    def draw_text(self, text, font, text_color, x, y):
         img = self.font.render(text, True, text_color)
         self.screen_rect.blit(img, (x,y))
+    
+    def draw_bg(self, surface, color):
+        surface.fill(color)
