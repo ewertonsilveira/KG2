@@ -1,6 +1,5 @@
 import pygame
 
-
 class BaseState(object):
     def __init__(self):
         self.done = False
@@ -21,3 +20,7 @@ class BaseState(object):
 
     def draw(self, surface):
         pass
+    
+    def draw_text(text, font, text_color, x, y):
+        img = self.font.render(text, True, text_color)
+        self.screen_rect.blit(img, (x,y))

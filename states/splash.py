@@ -7,13 +7,13 @@ class Splash(BaseState):
     def __init__(self):
         super(Splash, self).__init__()
         x,y = self.screen_rect.center
-        self.title = self.font.render("KYLIE'S GAME", True, pygame.Color("black"))
+        self.title = self.font.render("KYLIE GAMES", True, pygame.Color("black"))
         self.title_rect = self.title.get_rect(center=(x+15,y+20))
 
         logo = pygame.image.load('public/graphics/logo.png').convert_alpha()
         self.logo_sf = pygame.transform.scale(logo, (100,115))
  
-        bg = pygame.image.load('public/graphics/bg.png').convert_alpha()
+        bg = pygame.image.load('public/graphics/bg2.png').convert_alpha()
         self.bg_sf = pygame.transform.scale(bg, self.screen_rect.size)
 
         self.next_state = "MENU"
@@ -53,6 +53,6 @@ class Splash(BaseState):
         logo = pygame.transform.rotate(self.logo_sf, self.rotation)
         
         x,y = self.screen_rect.center
-        logo_rect = logo.get_rect(center=(x,y-55))
+        logo_rect = logo.get_rect(center=(x,y-60))
         surface.blit(logo, logo_rect)
         surface.blit(self.title, self.title_rect)

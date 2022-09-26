@@ -2,6 +2,7 @@ import sys
 import pygame
 from states.menu import Menu
 from states.gameplay import Gameplay
+from states.shooter import Shooter
 from states.game_over import GameOver
 from states.splash import Splash
 from game import Game
@@ -18,6 +19,7 @@ states = {
     "MENU": Menu(),
     "SPLASH": Splash(),
     "GAMEPLAY": Gameplay(),
+    "SHOOTER": Shooter(),
     "GAME_OVER": GameOver(),
 }
 

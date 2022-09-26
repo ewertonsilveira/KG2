@@ -1,6 +1,5 @@
 import pygame
 
-
 class Game(object):
     def __init__(self, screen, states, start_state):
         self.done = False
