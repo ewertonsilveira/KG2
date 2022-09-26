@@ -1,37 +1,39 @@
 import pygame
 from .base import BaseState
 
+class Soldier(pygame.sprite.Sprite):
+    def __init__(self, x, y, scale):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('public/graphics/player/idle/0.png').convert_alpha()
+        self.image = pygame.transform.scale(img, (int(img.get_width()*scale), int(img.get_height()*scale)))
+        self.rect = img.get_rect(center = (x, y))
+    
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
 
 class Shooter(BaseState):
     def __init__(self):
         super(Shooter, self).__init__()
-        self.rect = pygame.Rect((0, 0), (80, 80))
-        self.rect.center = self.screen_rect.center
         self.next_state = "MENU"
+        x = 200
+        y = 200
+        scale = 3
 
-        self.snail_x_pos = self.screen_rect.width
-        self.sky_sf = pygame.image.load('public/graphics/sky.png').convert()
-        self.ground_sf = pygame.image.load('public/graphics/ground.png').convert()
-        self.snail_sf = pygame.image.load('public/graphics/snail/snail1.png').convert_alpha()
-        self.snail_rect = self.snail_sf.get_rect(midbottom = (self.snail_x_pos, self.sky_sf.get_height()))
+        self.players = [Soldier(x, y, scale), Soldier(x+50, y, scale)]
 
-        self.player_sf = pygame.image.load('public/graphics/player/player_walk_1.png').convert_alpha()
-        self.player_rect = self.player_sf.get_rect(midbottom = ((50, self.sky_sf.get_height())))
+        # self.ground_sf = pygame.image.load('public/graphics/ground.png').convert()
+        # self.snail_sf = pygame.image.load('public/graphics/snail/snail1.png').convert_alpha()
+        # self.snail_rect = self.snail_sf.get_rect(midbottom = (self.snail_x_pos, self.sky_sf.get_height()))
 
-        self.text_sf = self.font.render('Shooter', False, 'Black')
+        # self.player_sf = pygame.image.load('public/graphics/player/player_walk_1.png').convert_alpha()
+        # self.player_rect = self.player_sf.get_rect(midbottom = ((50, self.sky_sf.get_height())))
 
+        # self.text_sf = self.font.render('Shooter', False, 'Black')
 
     def draw(self, surface):
         surface.fill(pygame.Color("black"))
-                
-        if self.snail_rect.right < 0: self.snail_rect.left = self.screen_rect.width
-        self.snail_rect.x -= 4
-
-        surface.blit(self.sky_sf,(0, 0))
-        surface.blit(self.ground_sf,(0, self.sky_sf.get_height()))
-        surface.blit(self.text_sf, (self.screen_rect.width / 2 - self.text_sf.get_width() / 2, 50))
-        surface.blit(self.snail_sf, self.snail_rect)
-        surface.blit(self.player_sf, self.player_rect)
+        for index, player in enumerate(self.players):
+            player.draw(surface)
 
     def get_event(self, event):
         if event.type == pygame.QUIT:

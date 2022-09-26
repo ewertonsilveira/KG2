@@ -5,7 +5,7 @@ class Menu(BaseState):
     def __init__(self):
         super(Menu, self).__init__()
         self.active_index = 0
-        self.options = [("JUMPER Game", "GAMEPLAY"), ("SHOTTER Game","SHOTTER"), ("Quit Game","EXIT")]
+        self.options = [("SHOOTER Game","SHOOTER"), ("JUMPER Game", "GAMEPLAY"), ("Quit Game","EXIT")]
         self.next_state = "" #self.options[self.active_index][1]
         self.bgColor = (52, 78, 91)
 
@@ -19,7 +19,6 @@ class Menu(BaseState):
 
     def handle_action(self):
         selection = self.options[self.active_index][1]
-        print(selection)
         if selection == "EXIT":
             self.quit = True
         else:
@@ -31,9 +30,9 @@ class Menu(BaseState):
             self.quit = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_UP:
-                self.active_index -= 1 if self.active_index <= len(self.options) - 1 else 0
+                if self.active_index > 0 and self.active_index < len(self.options): self.active_index -= 1 
             elif event.key == pygame.K_DOWN:
-                self.active_index += 1 if self.active_index >= 0 else len(self.options) -1
+                if self.active_index >= 0 and self.active_index < len(self.options) - 1: self.active_index += 1 
             elif event.key == pygame.K_RETURN:
                 self.handle_action()
             elif event.key == pygame.K_SPACE:
