@@ -15,12 +15,20 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
-    def update(self):
+    def update(self, targets, group):
         # move bullet
         self.rect.x += self.direction * self.speed
         # check if bullet has gone off scree
         if self.rect.right < 0 or self.rect.left > self.surface.get_width():
             self.kill()
+
+        # check collision with characters
+        for t in targets:
+            if pygame.sprite.spritecollide(t, group, False):
+                if t.alive:
+                    t.health -= 5
+                    print(t.health)
+                    self.kill()
 
 
     def get_image(self):

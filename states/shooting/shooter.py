@@ -2,9 +2,9 @@ from email.headerregistry import Group
 import pygame
 import os
 
-from states.shooting.bullet import Bullet
+
 from ..base import BaseState
-from .character import Character
+from .character import Soldier
 
 from states.settings import *
 
@@ -22,8 +22,8 @@ class Shooter(BaseState):
 
         self.bullet_group = pygame.sprite.Group()
 
-        self.player = Character("player", 200, GROUND, 3, 5)
-        self.enemies = [Character("enemy", 300, GROUND, 3, 5)]
+        self.player = Soldier("player", 200, GROUND, 100, 3, 5, 20 * 100)
+        self.enemies = [Soldier("enemy", 300, GROUND, 20, 3, 5, 200 * 100)]
 
 
     def draw(self, surface):
@@ -32,17 +32,17 @@ class Shooter(BaseState):
 
         for _, enemy in enumerate(self.enemies):
             enemy.draw(surface)
+            enemy.update(surface, [self.player])
         
         self.player.draw(surface)
-        self.player.update_animation()
-        self.bullet_group.update()
-        self.bullet_group.draw(surface)
+        self.player.update(surface, self.enemies)
+
+        
 
         # update player action
         if self.player.alive:
             if self.shoot:
-                bullet = Bullet(surface, self.player.rect.centerx + self.player.rect.size[0] * 0.6, self.player.rect.centery, self.player.direction)
-                self.bullet_group.add(bullet)
+                self.player.shoot(surface)
             if self.player.in_air:
                 self.player.update_action(2) #1 run
             elif self.moving_left or self.moving_right:
