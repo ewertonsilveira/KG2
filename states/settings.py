@@ -1,0 +1,7 @@
+
+
+# define game variables
+GRAVITY = 0.75
+COOLDOWN_PERIOD = 100
+GROUND = 350
+BULLET_SPEED = 10
