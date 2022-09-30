@@ -41,7 +41,7 @@ class Shooter(BaseState):
         # update player action
         if self.player.alive:
             if self.shoot:
-                bullet = Bullet(self.player.rect.centerx, self.player.rect.centery, self.player.direction)
+                bullet = Bullet(surface, self.player.rect.centerx + self.player.rect.size[0] * 0.6, self.player.rect.centery, self.player.direction)
                 self.bullet_group.add(bullet)
             if self.player.in_air:
                 self.player.update_action(2) #1 run
