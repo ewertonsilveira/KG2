@@ -65,7 +65,7 @@ class Soldier(pygame.sprite.Sprite):
         self.bullet_group.update(enemies, self.bullet_group)
         self.bullet_group.draw(surface)
 
-        self.grenade_group.update(enemies, self.grenade_group)
+        self.grenade_group.update()
         self.grenade_group.draw(surface)
 
     def move(self, moving_left, moving_right):

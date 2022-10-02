@@ -18,7 +18,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self, targets, group):
         # move bullet
         self.rect.x += self.direction * self.speed
-        # check if bullet has gone off scree
+        # check if bullet has gone off screen
         if self.rect.right < 0 or self.rect.left > self.surface.get_width():
             self.kill()
 

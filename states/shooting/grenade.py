@@ -9,6 +9,7 @@ class Grenade(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.surface = surface
         self.bullet_image = None
+        self.vel_y = -11
         self.speed = GRENADE_SPEED
         self.timer = GRENADE_TIMER,
         self.direction = direction
@@ -16,13 +17,25 @@ class Grenade(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
-    def update(self, targets, group):
-        # move bullet
-        self.rect.x += self.direction * self.speed
-        # check if bullet has gone off scree
-        if self.rect.right < 0 or self.rect.left > self.surface.get_width():
-            self.kill()
+    def update(self):
+        # gravity affecting the grenade
+        self.vel_y += GRAVITY
+        dx = self.direction * self.speed
+        dy = self.vel_y
 
+        # stop when touch the ground
+        if self.rect.bottom + dy >= GROUND:
+            dy = GROUND - self.rect.bottom
+            self.speed = 0
+        
+        # check if bullet has gone off screen
+        if self.rect.left + dx < 0 or self.rect.right + dx > self.surface.get_width():
+            self.direction *= -1
+            dx = self.direction * self.speed
+
+        self.rect.y +=dy
+        self.rect.x += dx
+    
 
     def get_image(self):
         if self.bullet_image == None:        
