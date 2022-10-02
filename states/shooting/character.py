@@ -29,10 +29,12 @@ class Soldier(pygame.sprite.Sprite):
         self.image_update_time = pygame.time.get_ticks()
         self.bullet_group = pygame.sprite.Group()
 
-        for animation in ['Idle', 'Run', 'Jump', 'Death']:
+        for animation in ['idle', 'run', 'jump', 'death']:
             tmp_list = []
             dir = f'public/graphics/{self.char_type}/{animation}'
-            for filename in os.listdir(dir):
+            files = os.listdir(dir)
+            files.sort()
+            for filename in files:
                 img = pygame.image.load(os.path.join(dir, filename)).convert_alpha()
                 img = pygame.transform.scale(img, (int(img.get_width()*scale), int(img.get_height()*scale))) 
                 tmp_list.append(img)
@@ -44,6 +46,8 @@ class Soldier(pygame.sprite.Sprite):
 
     def update(self, surface, enemies):
         self.update_animation()
+        # keep checking if soldier is alive
+        self.check_alive()
 
         # update shoot cooldown
         if self.shoot_cooldown > 0:
@@ -52,8 +56,6 @@ class Soldier(pygame.sprite.Sprite):
         self.bullet_group.update(enemies, self.bullet_group)
         self.bullet_group.draw(surface)
 
-        # keep checking if soldier is alive
-        self.check_alive()
 
 
     def move(self, moving_left, moving_right):
@@ -93,7 +95,7 @@ class Soldier(pygame.sprite.Sprite):
         self.rect.y += dy
     
     def update_action(self, new_action):
-        # update only if is different one
+        # update only if is a new action 
         if self.action != new_action:
             self.action = new_action
             # update the animation settings
@@ -116,15 +118,19 @@ class Soldier(pygame.sprite.Sprite):
 
     def update_animation(self):
         # update new image
+        # update image depending on current frame
         self.image = self.animation_list[self.action][self.frame_index]
-        # check if enough fime has passed
+
+        #check if enough time has passed since the last update
         if pygame.time.get_ticks() - self.image_update_time > COOLDOWN_PERIOD:
             self.image_update_time = pygame.time.get_ticks()
             self.frame_index += 1
-        
-        # if animation has run out of images, reset back to initial
+        #if the animation has run out the reset back to the start
         if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
+            if self.action == 3:
+                self.frame_index = len(self.animation_list[self.action]) - 1
+            else:
+                self.frame_index = 0
 
     def draw(self, surface):
         surface.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
