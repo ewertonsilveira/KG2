@@ -1,6 +1,5 @@
 import sys
 import pygame
-from states.gameImages import GameImages
 from states.menu import Menu
 from states.gameplay import Gameplay
 from states.shooting.shooter import Shooter

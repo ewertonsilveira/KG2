@@ -131,7 +131,7 @@ class Soldier(pygame.sprite.Sprite):
 
     def throw_grenade(self, surface):
         if self.grenade_cooldown == 0 and self.grenade > 0:
-            self.grenade_cooldown = 5
+            self.grenade_cooldown = GRENADE_COOLDOWN_TIMER
             x = self.rect.centerx + (0.3 * self.rect.size[0] * self.direction)
             grenade = Grenade(surface, x, self.rect.top, self.direction)
             self.grenade_group.add(grenade)

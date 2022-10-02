@@ -2,7 +2,7 @@ import pygame
 
 from states.settings import GRENADE_EXPLOSION_SCALE
 
-class GameImages(object):
+class GameImageLoader(object):
     def __init__(self):
         self.bullet_image = None
         self.grenade_image = None
@@ -30,4 +30,4 @@ class GameImages(object):
             print('grenade img')
         return self.grenade_image
 
-GAME_IMAGES = GameImages()
+GAME_IMAGES = GameImageLoader()
