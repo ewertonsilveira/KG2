@@ -14,6 +14,7 @@ class Shooter(BaseState):
         self.next_state = "MENU"
         self.bgColor = (144,201,120)
         self.groundColor = (255, 0, 0)
+        self.enemies = []
 
         # player action variables
         self.moving_left = False
@@ -21,9 +22,8 @@ class Shooter(BaseState):
         self.shoot = False
         self.grenade = False
 
-        self.player = Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, 3, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
-        self.enemies = [Soldier("enemy", self.screen_rect.right * 0.8, GROUND, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)]
-
+        self.create_player()
+        self.create_enemies()
 
     def draw(self, surface):
         self.draw_bg(surface, self.bgColor)
@@ -84,3 +84,10 @@ class Shooter(BaseState):
                 self.moving_right = False
             if event.key == pygame.K_ESCAPE:
                 self.done = True
+            
+    def create_enemies(self):
+        self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.4, GROUND * 1.1, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
+        self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.8, GROUND -50, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
+
+    def create_player(self):
+        self.player = Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, 3, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)

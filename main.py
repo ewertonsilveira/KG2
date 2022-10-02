@@ -1,5 +1,6 @@
 import sys
 import pygame
+from states.gameImages import GameImages
 from states.menu import Menu
 from states.gameplay import Gameplay
 from states.shooting.shooter import Shooter
@@ -15,7 +16,7 @@ ScreenSize = Size(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 pygame.init()
 screen = pygame.display.set_mode(ScreenSize)
-pygame.display.set_caption('Kylie Jumper')
+pygame.display.set_caption('Kylie Games')
 
 states = {
     "MENU": Menu(),

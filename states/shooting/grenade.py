@@ -1,6 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
+from states.gameImages import GAME_IMAGES
 
 from states.settings import *
 
@@ -13,17 +14,13 @@ class Grenade(pygame.sprite.Sprite):
         self.speed = GRENADE_SPEED
         self.timer = GRENADE_TIMER
         self.direction = direction
-        self.image = self.get_image()
+        self.image = GAME_IMAGES.get_grenade_image()
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-        self.images = []
-        for num in range(1, 6):
-            img = pygame.image.load(f'public/graphics/explosion/exp{num}.png').convert_alpha()
-            img = pygame.transform.scale(img, (int(img.get_width() * GRENADE_EXPLOSION_SCALE), int(img.get_height() * GRENADE_EXPLOSION_SCALE)))
-            self.images.append(img)
+        self.images = GAME_IMAGES.get_grenade_explosion_images()
         self.counter = (len(self.images)-1 ) * 10
 
-    def update(self):
+    def update(self, group):
         # gravity affecting the grenade
         self.vel_y += GRAVITY
         dx = self.direction * self.speed
@@ -53,9 +50,13 @@ class Grenade(pygame.sprite.Sprite):
 
         if self.counter < 0:
             self.kill()
+            # do damage to anyone close
+            for e in group:
+                if abs(self.rect.centerx - e.rect.centerx) < TILE_SIZE * 2 and \
+                    abs(self.rect.centery - e.rect.centery) < TILE_SIZE * 2 :
+                    if e.alive:
+                        e.health -= GRENADE_HEALTH_DAMAGE
+
 
     
-    def get_image(self):
-        if self.bullet_image == None:        
-            self.bullet_image = pygame.image.load("public/graphics/icons/grenade.png").convert_alpha();
-        return self.bullet_image
+

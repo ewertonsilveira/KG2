@@ -1,7 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
-
+from states.gameImages import GAME_IMAGES
 from states.settings import * 
 
 class Bullet(pygame.sprite.Sprite):
@@ -11,7 +11,7 @@ class Bullet(pygame.sprite.Sprite):
         self.bullet_image = None
         self.speed = BULLET_SPEED
         self.direction = direction
-        self.image = self.get_image()
+        self.image = GAME_IMAGES.get_bullet_image()
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
 
@@ -27,11 +27,4 @@ class Bullet(pygame.sprite.Sprite):
             if pygame.sprite.spritecollide(t, group, False):
                 if t.alive:
                     t.health -= ENEMY_BULLET_HEALTH_DAMAGE
-                    print(t.health)
                     self.kill()
-
-
-    def get_image(self):
-        if self.bullet_image == None:        
-            self.bullet_image = pygame.image.load("public/graphics/icons/bullet.png").convert_alpha();
-        return self.bullet_image
