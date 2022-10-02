@@ -121,15 +121,17 @@ class Soldier(pygame.sprite.Sprite):
 
     def shoot(self, surface):
         if self.shoot_cooldown == 0 and self.ammo > 0:
-            self.shoot_cooldown = 10
-            bullet = Bullet(surface, self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery, self.direction)
+            self.shoot_cooldown = SHOOT_COOLDOWN_TIMER
+            x = self.rect.centerx + (0.6 * self.rect.size[0] * self.direction)
+            bullet = Bullet(surface, x, self.rect.centery, self.direction)
             self.bullet_group.add(bullet)
             self.ammo -= 1
 
     def throw_grenade(self, surface):
         if self.grenade_cooldown == 0 and self.grenade > 0:
-            self.grenade_cooldown = 10
-            grenade = Grenade(surface, self.rect.centerx, self.rect.centery, self.direction)
+            self.grenade_cooldown = 5
+            x = self.rect.centerx + (0.3 * self.rect.size[0] * self.direction)
+            grenade = Grenade(surface, x, self.rect.top, self.direction)
             self.grenade_group.add(grenade)
             self.grenade -= 1
 
