@@ -8,8 +8,10 @@ from states.splash import Splash
 from game import Game
 from collections import namedtuple
 
+from states.settings import *
+
 Size = namedtuple('Size',"width height")
-ScreenSize = Size(800, int(800 * 0.8))
+ScreenSize = Size(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 pygame.init()
 screen = pygame.display.set_mode(ScreenSize)

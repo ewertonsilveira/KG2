@@ -4,7 +4,7 @@ import os
 
 
 from ..base import BaseState
-from .character import Soldier
+from .soldier import Soldier
 
 from states.settings import *
 
@@ -19,11 +19,10 @@ class Shooter(BaseState):
         self.moving_left = False
         self.moving_right = False
         self.shoot = False
+        self.grenade = False
 
-        self.bullet_group = pygame.sprite.Group()
-
-        self.player = Soldier("player", 200, GROUND, 100, 3, 5, 20 * 100, 1)
-        self.enemies = [Soldier("enemy", self.screen_rect.right * 0.8, GROUND, 20, 3, 5, 200 * 100, -1)]
+        self.player = Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, 3, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
+        self.enemies = [Soldier("enemy", self.screen_rect.right * 0.8, GROUND, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)]
 
 
     def draw(self, surface):
@@ -40,8 +39,13 @@ class Shooter(BaseState):
 
         # update player action
         if self.player.alive:
+            # shoot bullets
             if self.shoot:
                 self.player.shoot(surface)
+            elif self.grenade:
+                self.player.throw_grenade(surface)
+
+            # other player actions
             if self.player.in_air:
                 self.player.update_action(2) #1 run
             elif self.moving_left or self.moving_right:
@@ -59,20 +63,24 @@ class Shooter(BaseState):
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.shoot = True
-            elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+            if event.key == pygame.K_q:
+                self.grenade = True
+            if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.player.alive:
+                self.player.jump = True
+            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 self.moving_left = True
-            elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.moving_right = True
 
 
         elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_SPACE:
+                self.shoot = False
+            if event.key == pygame.K_q:
+                self.grenade = False
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 self.moving_left = False
-            elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.moving_right = False
-            elif (event.key == pygame.K_w or event.key == pygame.K_UP) and self.player.alive:
-                self.player.jump = True
-            elif event.key == pygame.K_SPACE:
-                self.shoot = False
-            elif event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE:
                 self.done = True

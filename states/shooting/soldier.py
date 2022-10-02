@@ -4,23 +4,27 @@ import os
 
 from states.shooting.bullet import Bullet
 
-from states.settings import * 
+from states.settings import *
+from states.shooting.grenade import Grenade 
 
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, chart_type, x, y, health, scale, speed, ammo, direction):
+    def __init__(self, chart_type, x, y, health, scale, speed, direction, ammo, grenade):
         pygame.sprite.Sprite.__init__(self)
         # Variables
         self.alive = True
         self.char_type = chart_type
         self.speed = speed
-        self.shoot_cooldown = 0
         self.health = health
         self.max_health = self.health
         self.flip = False
         self.direction = direction
         self.vel_y = 0
         self.ammo = ammo
+        self.shoot_cooldown = 0
         self.start_ammo = self.ammo
+        self.grenade = grenade
+        self.grenade_cooldown = 0
+        self.grenade_ammo = self.grenade
         self.animation_list = []
         self.frame_index = 0
         self.action = 0
@@ -28,6 +32,7 @@ class Soldier(pygame.sprite.Sprite):
         self.in_air = True
         self.image_update_time = pygame.time.get_ticks()
         self.bullet_group = pygame.sprite.Group()
+        self.grenade_group = pygame.sprite.Group()
 
         for animation in ['idle', 'run', 'jump', 'death']:
             tmp_list = []
@@ -53,10 +58,15 @@ class Soldier(pygame.sprite.Sprite):
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
 
+        # update grenade cooldown
+        if self.grenade_cooldown > 0:
+            self.grenade_cooldown -= 1
+
         self.bullet_group.update(enemies, self.bullet_group)
         self.bullet_group.draw(surface)
 
-
+        self.grenade_group.update(enemies, self.grenade_group)
+        self.grenade_group.draw(surface)
 
     def move(self, moving_left, moving_right):
         # reset movement variables
@@ -115,6 +125,13 @@ class Soldier(pygame.sprite.Sprite):
             bullet = Bullet(surface, self.rect.centerx + (0.6 * self.rect.size[0] * self.direction), self.rect.centery, self.direction)
             self.bullet_group.add(bullet)
             self.ammo -= 1
+
+    def throw_grenade(self, surface):
+        if self.grenade_cooldown == 0 and self.grenade > 0:
+            self.grenade_cooldown = 10
+            grenade = Grenade(surface, self.rect.centerx, self.rect.centery, self.direction)
+            self.grenade_group.add(grenade)
+            self.grenade -= 1
 
     def update_animation(self):
         # update new image
