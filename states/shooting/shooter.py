@@ -22,8 +22,8 @@ class Shooter(BaseState):
 
         self.bullet_group = pygame.sprite.Group()
 
-        self.player = Soldier("player", 200, GROUND, 100, 3, 5, 20 * 100)
-        self.enemies = [Soldier("enemy", 300, GROUND, 20, 3, 5, 200 * 100)]
+        self.player = Soldier("player", 200, GROUND, 100, 3, 5, 20 * 100, 1)
+        self.enemies = [Soldier("enemy", self.screen_rect.right * 0.8, GROUND, 20, 3, 5, 200 * 100, -1)]
 
 
     def draw(self, surface):
@@ -32,11 +32,10 @@ class Shooter(BaseState):
 
         for _, enemy in enumerate(self.enemies):
             enemy.draw(surface)
-            enemy.update(surface, [self.player])
+            enemy.update(surface, [self.player])            
         
         self.player.draw(surface)
         self.player.update(surface, self.enemies)
-
         
 
         # update player action

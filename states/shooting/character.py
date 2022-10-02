@@ -7,7 +7,7 @@ from states.shooting.bullet import Bullet
 from states.settings import * 
 
 class Soldier(pygame.sprite.Sprite):
-    def __init__(self, chart_type, x, y, health, scale, speed, ammo):
+    def __init__(self, chart_type, x, y, health, scale, speed, ammo, direction):
         pygame.sprite.Sprite.__init__(self)
         # Variables
         self.alive = True
@@ -17,7 +17,7 @@ class Soldier(pygame.sprite.Sprite):
         self.health = health
         self.max_health = self.health
         self.flip = False
-        self.direction = 1
+        self.direction = direction
         self.vel_y = 0
         self.ammo = ammo
         self.start_ammo = self.ammo
@@ -29,7 +29,7 @@ class Soldier(pygame.sprite.Sprite):
         self.image_update_time = pygame.time.get_ticks()
         self.bullet_group = pygame.sprite.Group()
 
-        for animation in ['Idle', 'Run', 'Jump']:
+        for animation in ['Idle', 'Run', 'Jump', 'Death']:
             tmp_list = []
             dir = f'public/graphics/{self.char_type}/{animation}'
             for filename in os.listdir(dir):
@@ -51,6 +51,9 @@ class Soldier(pygame.sprite.Sprite):
 
         self.bullet_group.update(enemies, self.bullet_group)
         self.bullet_group.draw(surface)
+
+        # keep checking if soldier is alive
+        self.check_alive()
 
 
     def move(self, moving_left, moving_right):
@@ -96,6 +99,13 @@ class Soldier(pygame.sprite.Sprite):
             # update the animation settings
             self.frame_index = 0
             self.image_update_time = pygame.time.get_ticks()
+
+    def check_alive(self):
+        if self.health <= 0:
+            self.health = 0
+            self.speed = 0
+            self.alive = False
+            self.update_action(3) # Death
 
     def shoot(self, surface):
         if self.shoot_cooldown == 0 and self.ammo > 0:
