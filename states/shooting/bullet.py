@@ -27,4 +27,5 @@ class Bullet(pygame.sprite.Sprite):
             if pygame.sprite.spritecollide(t, group, False):
                 if t.alive:
                     t.health -= ENEMY_BULLET_HEALTH_DAMAGE
+                    print(t.char_type, t.health)
                     self.kill()

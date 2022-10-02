@@ -48,14 +48,17 @@ class Grenade(pygame.sprite.Sprite):
             self.rect = newRect
             self.counter -= 1
 
-        if self.counter < 0:
-            self.kill()
-            # do damage to anyone close
             for e in group:
                 if abs(self.rect.centerx - e.rect.centerx) < TILE_SIZE * 2 and \
                     abs(self.rect.centery - e.rect.centery) < TILE_SIZE * 2 :
                     if e.alive:
+                        print(e.char_type, e.health)
                         e.health -= GRENADE_HEALTH_DAMAGE
+
+        if self.counter < 0:
+            self.kill()
+            # do damage to anyone close
+            
 
 
     
