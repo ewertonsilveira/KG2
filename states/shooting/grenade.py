@@ -3,7 +3,6 @@ import pygame
 import os
 
 from states.settings import *
-from states.shooting.explosion import Explosion 
 
 class Grenade(pygame.sprite.Sprite):
     def __init__(self, surface, x, y, direction):
@@ -17,7 +16,12 @@ class Grenade(pygame.sprite.Sprite):
         self.image = self.get_image()
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-        self.grenade_explode_group = pygame.sprite.Group()
+        self.images = []
+        for num in range(1, 6):
+            img = pygame.image.load(f'public/graphics/explosion/exp{num}.png').convert_alpha()
+            img = pygame.transform.scale(img, (int(img.get_width() * GRENADE_EXPLOSION_SCALE), int(img.get_height() * GRENADE_EXPLOSION_SCALE)))
+            self.images.append(img)
+        self.counter = (len(self.images)-1 ) * 10
 
     def update(self):
         # gravity affecting the grenade
@@ -40,12 +44,16 @@ class Grenade(pygame.sprite.Sprite):
 
         self.timer -= 1
         if self.timer <= 0:
-            explosion = Explosion(self.surface, self.rect.x, self.rect.y, GRENADE_EXPLOSION_SCALE)
-            self.grenade_explode_group.add(explosion)
+            img = self.images[int(self.counter/10)]
+            self.image = img
+            newRect = self.image.get_rect()
+            newRect.center = self.rect.center
+            self.rect = newRect
+            self.counter -= 1
+
+        if self.counter < 0:
             self.kill()
-    
-        self.grenade_explode_group.update()
-        self.grenade_explode_group.draw(self.surface)
+
     
     def get_image(self):
         if self.bullet_image == None:        
