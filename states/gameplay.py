@@ -1,4 +1,6 @@
 import pygame
+
+from states.fonts import FONTS
 from .base import BaseState
 
 
@@ -18,7 +20,7 @@ class Gameplay(BaseState):
         self.player_sf = pygame.image.load('public/graphics/player/player_walk_1.png').convert_alpha()
         self.player_rect = self.player_sf.get_rect(midbottom = ((50, self.sky_sf.get_height())))
 
-        self.text_sf = self.font.render('Start', False, 'Black')
+        self.text_sf = FONTS.primary_font.render('Start', False, 'Black')
 
 
     def draw(self, surface):

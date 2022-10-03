@@ -1,4 +1,6 @@
 import pygame
+
+from states.fonts import FONTS
 from .base import BaseState
 
 tenSeconds = 15000 * 1000
@@ -7,7 +9,7 @@ class Splash(BaseState):
     def __init__(self):
         super(Splash, self).__init__()
         x,y = self.screen_rect.center
-        self.title = self.font.render("KYLIE GAMES", True, pygame.Color("black"))
+        self.title = FONTS.primary_font.render("KYLIE GAMES", True, pygame.Color("black"))
         self.title_rect = self.title.get_rect(center=(x+15,y+20))
 
         logo = pygame.image.load('public/graphics/logo.png').convert_alpha()

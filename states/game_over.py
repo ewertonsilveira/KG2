@@ -1,13 +1,15 @@
 import pygame
+
+from states.fonts import FONTS
 from .base import BaseState
 
 
 class GameOver(BaseState):
     def __init__(self):
         super(GameOver, self).__init__()
-        self.title = self.font.render("Game Over", True, pygame.Color("white"))
+        self.title = FONTS.primary_font.render("Game Over", True, pygame.Color("white"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        self.instructions = self.font.render("Press space to start again, or enter to go to the menu", True, pygame.Color("white"))
+        self.instructions = FONTS.primary_font.render("Press space to start again, or enter to go to the menu", True, pygame.Color("white"))
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] +  50)
         self.instructions_rect = self.instructions.get_rect(center=instructions_center)
 

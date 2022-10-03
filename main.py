@@ -1,5 +1,6 @@
 import sys
 import pygame
+from states.fonts import FONTS, GameFonts
 from states.menu import Menu
 from states.gameplay import Gameplay
 from states.shooting.shooter import Shooter
@@ -16,6 +17,8 @@ ScreenSize = Size(SCREEN_WIDTH, SCREEN_HEIGHT)
 pygame.init()
 screen = pygame.display.set_mode(ScreenSize)
 pygame.display.set_caption('Kylie Games')
+
+FONTS.init()
 
 states = {
     "MENU": Menu(),

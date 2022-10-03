@@ -1,4 +1,6 @@
 import pygame
+
+from states.fonts import FONTS
 from .base import BaseState
 
 class Menu(BaseState):
@@ -11,7 +13,7 @@ class Menu(BaseState):
 
     def render_text(self, index):
         color = pygame.Color("red") if index == self.active_index else pygame.Color("white")
-        return self.font.render(self.options[index][0], True, color)
+        return FONTS.primary_font.render(self.options[index][0], True, color)
 
     def get_text_position(self, text, index):
         center = (self.screen_rect.center[0], self.screen_rect.center[1] + (index * 50))

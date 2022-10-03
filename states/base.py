@@ -1,5 +1,7 @@
 import pygame
 
+from states.fonts import FONTS
+
 class BaseState(object):
     def __init__(self):
         self.done = False
@@ -7,7 +9,7 @@ class BaseState(object):
         self.next_state = None
         self.screen_rect = pygame.display.get_surface().get_rect()
         self.persist = {}
-        self.font = pygame.font.Font('public/font/Pixeltype.ttf', 50)
+
         #self.font = pygame.font.SysFont(None, 50)
 
     def startup(self, persistent):
@@ -23,7 +25,7 @@ class BaseState(object):
         pass
     
     def draw_text(self, text, font, text_color, x, y):
-        img = self.font.render(text, True, text_color)
+        img = FONTS.primary_font.render(text, True, text_color)
         self.screen_rect.blit(img, (x,y))
     
     def draw_bg(self, surface, color):

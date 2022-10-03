@@ -1,6 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
+from states.colors import COLORS
 
 from states.shooting.itemBox import HEALTH,AMMO, GRENADE, ItemBox
 
@@ -14,8 +15,6 @@ class Shooter(BaseState):
     def __init__(self):
         super(Shooter, self).__init__()
         self.next_state = "MENU"
-        self.bgColor = (144,201,120)
-        self.groundColor = (255, 0, 0)
         self.enemies = []
 
         # player action variables
@@ -34,8 +33,8 @@ class Shooter(BaseState):
         self.item_box_group.add(ItemBox(GRENADE, 600, GROUND))
 
     def draw(self, surface):
-        self.draw_bg(surface, self.bgColor)
-        pygame.draw.line(surface, self.groundColor, (0, GROUND), (surface.get_width(), GROUND))
+        self.draw_bg(surface, COLORS.bgColor)
+        pygame.draw.line(surface, COLORS.groundColor, (0, GROUND), (surface.get_width(), GROUND))
 
         for _, enemy in enumerate(self.enemies):
             enemy.draw(surface)
@@ -94,6 +93,12 @@ class Shooter(BaseState):
                 self.moving_right = False
             if event.key == pygame.K_ESCAPE:
                 self.done = True
+    
+    def draw_text(surface, text, font, text_col, x, y):
+        img = font.render(text, True, text_col)
+        surface.blit(img, (x, y))
+
+
             
     def create_enemies(self):
         self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.4, GROUND * 1.1, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
