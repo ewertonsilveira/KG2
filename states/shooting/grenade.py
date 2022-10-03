@@ -20,7 +20,7 @@ class Grenade(pygame.sprite.Sprite):
         self.images = GAME_IMAGES.get_grenade_explosion_images()
         self.counter = (len(self.images)-1 ) * 10
 
-    def update(self, group):
+    def update(self, player, enemies):
         # gravity affecting the grenade
         self.vel_y += GRAVITY
         dx = self.direction * self.speed
@@ -48,18 +48,20 @@ class Grenade(pygame.sprite.Sprite):
             self.rect = newRect
             self.counter -= 1
 
-            for e in group:
-                if abs(self.rect.centerx - e.rect.centerx) < TILE_SIZE * 2 and \
-                    abs(self.rect.centery - e.rect.centery) < TILE_SIZE * 2 :
-                    if e.alive:
-                        print(e.char_type, e.health)
-                        e.health -= GRENADE_HEALTH_DAMAGE
-
         if self.counter < 0:
             self.kill()
             # do damage to anyone close
-            
+            for e in enemies:
+                self.apply_damage(e)
 
+            self.apply_damage(player)
+            
+    def apply_damage(self, target):
+        if abs(self.rect.centerx - target.rect.centerx) < TILE_SIZE * 2 and \
+            abs(self.rect.centery - target.rect.centery) < TILE_SIZE * 2 :
+            if target.alive:
+                print(target.char_type, target.health)
+                target.health -= GRENADE_HEALTH_DAMAGE
 
     
 

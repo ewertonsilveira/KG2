@@ -2,6 +2,7 @@ from email.headerregistry import Group
 import pygame
 import os
 from states.colors import COLORS
+from states.fonts import FONTS
 
 from states.shooting.itemBox import HEALTH,AMMO, GRENADE, ItemBox
 
@@ -28,7 +29,7 @@ class Shooter(BaseState):
         self.create_player()
         self.create_enemies()
 
-        self.item_box_group.add(ItemBox(HEALTH, 100, GROUND))
+        self.item_box_group.add(ItemBox(HEALTH, 20, GROUND))
         self.item_box_group.add(ItemBox(AMMO, 300, GROUND))
         self.item_box_group.add(ItemBox(GRENADE, 600, GROUND))
 
@@ -45,6 +46,13 @@ class Shooter(BaseState):
 
         self.item_box_group.update(self.player)
         self.item_box_group.draw(surface)
+
+        # show ammo
+        self.draw_text(surface, f'AMMO    : {self.player.ammo}', FONTS.secondary_font, COLORS.WHITE, 10, 25)
+
+        # show grenades
+        self.draw_text(surface, f'GRENADES: {self.player.grenade}', FONTS.secondary_font, COLORS.WHITE, 10, 50)
+
 
         # update player action
         if self.player.alive:
@@ -94,7 +102,7 @@ class Shooter(BaseState):
             if event.key == pygame.K_ESCAPE:
                 self.done = True
     
-    def draw_text(surface, text, font, text_col, x, y):
+    def draw_text(self, surface, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         surface.blit(img, (x, y))
 

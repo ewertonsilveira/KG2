@@ -67,7 +67,7 @@ class Soldier(pygame.sprite.Sprite):
 
         group = enemies.copy()
         group.append(self)
-        self.grenade_group.update(group)
+        self.grenade_group.update(self, group)
         self.grenade_group.draw(surface)
 
     def move(self, moving_left, moving_right):
@@ -124,7 +124,7 @@ class Soldier(pygame.sprite.Sprite):
     def shoot(self, surface):
         if self.shoot_cooldown == 0 and self.ammo > 0:
             self.shoot_cooldown = SHOOT_COOLDOWN_TIMER
-            x = self.rect.centerx + (0.6 * self.rect.size[0] * self.direction)
+            x = self.rect.centerx + (0.3 * self.rect.size[0] * self.direction)
             bullet = Bullet(surface, x, self.rect.centery, self.direction)
             self.bullet_group.add(bullet)
             self.ammo -= 1
