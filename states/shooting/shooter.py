@@ -114,7 +114,7 @@ class Shooter(BaseState):
         surface.blit(img, (x, y))
             
     def create_enemies(self):
-        self.enemies.append(EnemySoldier("enemy", self.screen_rect.right * 0.6, GROUND * 1.1, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
+        self.enemies.append(EnemySoldier("enemy", self.screen_rect.right * 0.6, GROUND, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
         self.enemies.append(EnemySoldier("enemy", self.screen_rect.right * 0.85, GROUND, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
 
     def create_player(self):
