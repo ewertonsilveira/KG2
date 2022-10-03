@@ -156,4 +156,16 @@ class Soldier(pygame.sprite.Sprite):
     def draw(self, surface):
         surface.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
+    def update_health(self, value):
+        self.health += value
+        if self.health > self.max_health:
+            self.health = self.max_health
+        print(self.health, self.max_health)
 
+    def update_ammo(self, value):
+        self.ammo += value
+        print(self.ammo)
+            
+    def update_grenade(self, value): 
+        self.grenade += value
+        print(self.grenade)

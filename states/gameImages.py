@@ -6,6 +6,9 @@ class GameImageLoader(object):
     def __init__(self):
         self.bullet_image = None
         self.grenade_image = None
+        self.ammo_box_image = None
+        self.health_box_image = None
+        self.grenade_box_image = None
         self.grenade_explosion_images = None
     
     def get_bullet_image(self):
@@ -29,5 +32,23 @@ class GameImageLoader(object):
             self.grenade_image = pygame.image.load("public/graphics/icons/grenade.png").convert_alpha();
             print('grenade img')
         return self.grenade_image
+    
+    def get_grenade_box_image(self):
+        if self.grenade_box_image == None:
+            self.grenade_box_image = pygame.image.load("public/graphics/icons/grenade_box.png").convert_alpha();
+            print('grenade box img')
+        return self.grenade_box_image
+
+    def get_health_box_image(self):
+        if self.health_box_image == None:
+            self.health_box_image = pygame.image.load("public/graphics/icons/health_box.png").convert_alpha();
+            print('health_box img')
+        return self.health_box_image
+    
+    def get_ammo_box_image(self):
+        if self.ammo_box_image == None:
+            self.ammo_box_image = pygame.image.load("public/graphics/icons/ammo_box.png").convert_alpha();
+            print('ammo_box img')
+        return self.ammo_box_image
 
 GAME_IMAGES = GameImageLoader()

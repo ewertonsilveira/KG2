@@ -2,6 +2,8 @@ from email.headerregistry import Group
 import pygame
 import os
 
+from states.shooting.itemBox import HEALTH,AMMO, GRENADE, ItemBox
+
 
 from ..base import BaseState
 from .soldier import Soldier
@@ -22,8 +24,14 @@ class Shooter(BaseState):
         self.shoot = False
         self.grenade = False
 
+        self.item_box_group = pygame.sprite.Group()
+
         self.create_player()
         self.create_enemies()
+
+        self.item_box_group.add(ItemBox(HEALTH, 100, GROUND))
+        self.item_box_group.add(ItemBox(AMMO, 300, GROUND))
+        self.item_box_group.add(ItemBox(GRENADE, 600, GROUND))
 
     def draw(self, surface):
         self.draw_bg(surface, self.bgColor)
@@ -35,7 +43,9 @@ class Shooter(BaseState):
         
         self.player.draw(surface)
         self.player.update(surface, self.enemies)
-        
+
+        self.item_box_group.update(self.player)
+        self.item_box_group.draw(surface)
 
         # update player action
         if self.player.alive:
