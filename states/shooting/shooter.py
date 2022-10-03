@@ -3,6 +3,8 @@ import pygame
 import os
 from states.colors import COLORS
 from states.fonts import FONTS
+from states.gameImages import GAME_IMAGES
+from states.shooting.healthBar import HealthBar
 
 from states.shooting.itemBox import HEALTH,AMMO, GRENADE, ItemBox
 
@@ -28,6 +30,7 @@ class Shooter(BaseState):
 
         self.create_player()
         self.create_enemies()
+        self.health_bar = HealthBar(10,10, self.player.health, self.player.max_health)
 
         self.item_box_group.add(ItemBox(HEALTH, 20, GROUND))
         self.item_box_group.add(ItemBox(AMMO, 300, GROUND))
@@ -43,15 +46,18 @@ class Shooter(BaseState):
         
         self.player.draw(surface)
         self.player.update(surface, self.enemies)
+        self.health_bar.draw(surface, self.player.health)
 
         self.item_box_group.update(self.player)
         self.item_box_group.draw(surface)
 
         # show ammo
-        self.draw_text(surface, f'AMMO    : {self.player.ammo}', FONTS.secondary_font, COLORS.WHITE, 10, 25)
+        self.draw_text(surface, 'AMMO: ', FONTS.secondary_font, COLORS.WHITE, 10, 35)
+        for x in range(self.player.ammo): surface.blit(GAME_IMAGES.get_bullet_image(), (90 + (x * 10), 40))
 
         # show grenades
-        self.draw_text(surface, f'GRENADES: {self.player.grenade}', FONTS.secondary_font, COLORS.WHITE, 10, 50)
+        self.draw_text(surface, 'GRENADES:', FONTS.secondary_font, COLORS.WHITE, 10, 60)
+        for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (135 + (x * 15), 60))
 
 
         # update player action
@@ -105,8 +111,6 @@ class Shooter(BaseState):
     def draw_text(self, surface, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         surface.blit(img, (x, y))
-
-
             
     def create_enemies(self):
         self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.4, GROUND * 1.1, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
