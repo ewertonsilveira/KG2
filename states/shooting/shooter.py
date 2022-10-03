@@ -4,6 +4,7 @@ import os
 from states.colors import COLORS
 from states.fonts import FONTS
 from states.gameImages import GAME_IMAGES
+from states.shooting.enemySoldier import EnemySoldier
 from states.shooting.healthBar import HealthBar
 
 from states.shooting.itemBox import HEALTH,AMMO, GRENADE, ItemBox
@@ -41,7 +42,8 @@ class Shooter(BaseState):
         pygame.draw.line(surface, COLORS.groundColor, (0, GROUND), (surface.get_width(), GROUND))
 
         for _, enemy in enumerate(self.enemies):
-            enemy.draw(surface)
+            enemy.ai(self.player)
+            enemy.draw(surface)            
             enemy.update(surface, [self.player])            
         
         self.player.draw(surface)
@@ -53,12 +55,11 @@ class Shooter(BaseState):
 
         # show ammo
         self.draw_text(surface, 'AMMO: ', FONTS.secondary_font, COLORS.WHITE, 10, 35)
-        for x in range(self.player.ammo): surface.blit(GAME_IMAGES.get_bullet_image(), (90 + (x * 10), 40))
+        for x in range(self.player.ammo): surface.blit(GAME_IMAGES.get_bullet_image(), (80 + (x * 10), 40))
 
         # show grenades
         self.draw_text(surface, 'GRENADES:', FONTS.secondary_font, COLORS.WHITE, 10, 60)
-        for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (135 + (x * 15), 60))
-
+        for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
 
         # update player action
         if self.player.alive:
@@ -113,8 +114,8 @@ class Shooter(BaseState):
         surface.blit(img, (x, y))
             
     def create_enemies(self):
-        self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.4, GROUND * 1.1, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
-        self.enemies.append(Soldier("enemy", self.screen_rect.right * 0.8, GROUND -50, ENEMY_BASE_HEALTH, 3, 5, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
+        self.enemies.append(EnemySoldier("enemy", self.screen_rect.right * 0.6, GROUND * 1.1, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
+        self.enemies.append(EnemySoldier("enemy", self.screen_rect.right * 0.85, GROUND, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, -1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES))
 
     def create_player(self):
-        self.player = Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, 3, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
+        self.player = Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
