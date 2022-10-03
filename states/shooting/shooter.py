@@ -42,7 +42,7 @@ class Shooter(BaseState):
         pygame.draw.line(surface, COLORS.groundColor, (0, GROUND), (surface.get_width(), GROUND))
 
         for _, enemy in enumerate(self.enemies):
-            enemy.ai(self.player)
+            enemy.ai(surface, self.player)
             enemy.draw(surface)            
             enemy.update(surface, [self.player])            
         

@@ -49,7 +49,7 @@ class Soldier(pygame.sprite.Sprite):
         self.rect = img.get_rect()
         self.rect.center = (x, y - img.get_height()/2)
 
-    def ai(self):
+    def ai(self, surface, target):
         pass
 
     def update(self, surface, enemies):

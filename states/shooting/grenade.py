@@ -14,7 +14,9 @@ class Grenade(pygame.sprite.Sprite):
         self.speed = GRENADE_SPEED
         self.timer = GRENADE_TIMER
         self.direction = direction
-        self.image = GAME_IMAGES.get_grenade_image()
+        img = GAME_IMAGES.get_grenade_image()
+        img = pygame.transform.scale(img, (int(img.get_width()*GRENADE_SCALE), int(img.get_height()*GRENADE_SCALE))) 
+        self.image = img
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.images = GAME_IMAGES.get_grenade_explosion_images()

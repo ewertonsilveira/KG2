@@ -11,10 +11,12 @@ class Bullet(pygame.sprite.Sprite):
         self.bullet_image = None
         self.speed = BULLET_SPEED
         self.direction = direction
-        self.image = GAME_IMAGES.get_bullet_image()
+        img = GAME_IMAGES.get_bullet_image()
+        img = pygame.transform.scale(img, (int(img.get_width()*BULLETS_SCALE), int(img.get_height()*BULLETS_SCALE))) 
+        self.image = img
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-
+ 
     def update(self, targets, group):
         # move bullet
         self.rect.x += self.direction * self.speed
