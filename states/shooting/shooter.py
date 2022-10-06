@@ -46,28 +46,6 @@ class Shooter(BaseState):
         # draw world map
         self.world.draw(surface)
 
-        pygame.draw.line(surface, COLORS.groundColor, (0, GROUND), (surface.get_width(), GROUND))
-
-        for _, enemy in enumerate(self.world.enemies):
-            enemy.ai(surface, self.world.player)
-            enemy.draw(surface)            
-            enemy.update(surface, [self.world.player])            
-        
-        self.world.player.draw(surface)
-        self.world.player.update(surface, self.world.enemies)
-        self.world.health_bar.draw(surface, self.world.player.health)
-
-        self.world.item_box_group.update(self.world.player)
-        self.world.item_box_group.draw(surface)
-
-        # show ammo
-        self.draw_text(surface, 'AMMO: ', FONTS.secondary_font, COLORS.WHITE, 10, 35)
-        for x in range(self.world.player.ammo): surface.blit(GAME_IMAGES.get_bullet_image(), (80 + (x * 10), 40))
-
-        # show grenades
-        self.draw_text(surface, 'GRENADES:', FONTS.secondary_font, COLORS.WHITE, 10, 60)
-        for x in range(self.world.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
-
         # update player action
         if self.world.player.alive:
             # shoot bullets
@@ -84,7 +62,7 @@ class Shooter(BaseState):
             else:
                 self.world.player.update_action(0) #1 idle
 
-            self.world.player.move(self.moving_left, self.moving_right)
+            self.world.player.move(self.world.obstacle_list, self.moving_left, self.moving_right)
         
 
     def get_event(self, event):
@@ -116,7 +94,5 @@ class Shooter(BaseState):
             if event.key == pygame.K_ESCAPE:
                 self.done = True
     
-    def draw_text(self, surface, text, font, text_col, x, y):
-        img = font.render(text, True, text_col)
-        surface.blit(img, (x, y))
+
             

@@ -48,11 +48,13 @@ class Soldier(pygame.sprite.Sprite):
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = img.get_rect()
         self.rect.center = (x, y - img.get_height()/2)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
-    def ai(self, surface, target):
+    def ai(self, surface, obstacle_list, target):
         pass
 
-    def update(self, surface, enemies):
+    def update(self, surface, obstacle_list, enemies):
         self.update_animation()
         # keep checking if soldier is alive
         self.check_alive()
@@ -65,13 +67,13 @@ class Soldier(pygame.sprite.Sprite):
         if self.grenade_cooldown > 0:
             self.grenade_cooldown -= 1
 
-        self.bullet_group.update(enemies, self.bullet_group)
+        self.bullet_group.update(obstacle_list, enemies, self.bullet_group)
         self.bullet_group.draw(surface)
 
-        self.grenade_group.update(self, enemies)
+        self.grenade_group.update(obstacle_list, self, enemies)
         self.grenade_group.draw(surface)
 
-    def move(self, moving_left, moving_right):
+    def move(self, obstacle_list, moving_left, moving_right):
         # reset movement variables
         dx = 0
         dy = 0
@@ -87,7 +89,7 @@ class Soldier(pygame.sprite.Sprite):
 
         # jump
         if self.jump == True and not self.in_air:
-            self.vel_y = -12
+            self.vel_y = SOLDIER_JUMP_POWER
             self.jump = False
             self.in_air = True
 
@@ -98,10 +100,22 @@ class Soldier(pygame.sprite.Sprite):
 
         dy += self.vel_y
 
-        # check collition with floor
-        if self.rect.bottom + dy > GROUND:
-            dy = GROUND - self.rect.bottom
-            self.in_air = False
+        #check for collision
+        for tile in obstacle_list:
+            #check collision in the x direction
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                dx = 0
+            #check for collision in the y direction
+            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                #check if below the ground, i.e. jumping
+                if self.vel_y < 0:
+                    self.vel_y = 0
+                    dy = tile[1].bottom - self.rect.top
+                #check if above the ground, i.e. falling
+                elif self.vel_y >= 0:
+                    self.vel_y = 0
+                    self.in_air = False
+                    dy = tile[1].top - self.rect.bottom
 
         # update rectangle pos
         self.rect.x += dx

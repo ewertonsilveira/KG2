@@ -16,14 +16,21 @@ class Bullet(pygame.sprite.Sprite):
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
  
-    def update(self, targets, group):
+    def update(self, obstacle_list, targets, group):
         # move bullet
         self.rect.x += self.direction * self.speed
         # check if bullet has gone off screen
         if self.rect.right < 0 or self.rect.left > self.surface.get_width():
             self.kill()
 
+        # check for collision with level
+        for tile in obstacle_list:
+            if tile[1].colliderect(self.rect):
+                self.kill()
+        
         # check collision with characters
         for t in targets:
             if pygame.sprite.spritecollide(t, group, False):
