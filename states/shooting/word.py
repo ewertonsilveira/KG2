@@ -35,11 +35,11 @@ class World(object):
                         pass 
                     elif tile == 15:
                         # player
-                        self.player = self.create_player()
+                        self.player = self.create_player(x * TILE_SIZE, y * TILE_SIZE)
                         self.health_bar = self.create_health_bar() 
                     elif tile == 16:
                         # enemy
-                        self.create_enemies()
+                        self.enemies.append(self.create_enemies(x * TILE_SIZE, y * TILE_SIZE))
                     elif tile == 17:
                         pass # item box ammo
                     elif tile == 18:
@@ -50,12 +50,12 @@ class World(object):
         return self.player, self.health_bar, self.enemies
 
 
-    def create_enemies(self):
-        return EnemySoldier("enemy", self.screen_rect.right * 0.6, GROUND, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
+    def create_enemies(self, x, y):
+        return EnemySoldier("enemy", x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
         
 
-    def create_player(self):
-        return Soldier("player", 200, GROUND, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
+    def create_player(self, x, y):
+        return Soldier("player", x, y, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
 
     def create_health_bar(self):
         return HealthBar(10,10, self.player.health, self.player.max_health)
