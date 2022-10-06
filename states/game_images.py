@@ -1,9 +1,10 @@
 import pygame
 
-from states.settings import GRENADE_EXPLOSION_SCALE
+from states.settings import GRENADE_EXPLOSION_SCALE, TILE_SIZE, TILE_TYPES
 
 class GameImageLoader(object):
     def __init__(self):
+        self.world_images = []
         self.bullet_image = None
         self.grenade_image = None
         self.ammo_box_image = None
@@ -50,5 +51,14 @@ class GameImageLoader(object):
             self.ammo_box_image = pygame.image.load("public/graphics/icons/ammo_box.png").convert_alpha();
             print('ammo_box img')
         return self.ammo_box_image
+
+    def get_world_images(self):
+        if len(self.world_images) == 0:
+            for img_id in range(TILE_TYPES):
+                img = pygame.image.load(f"public/graphics/tile/{img_id}.png").convert_alpha()
+                img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
+                self.world_images.append(img)
+            print('game world imgs')
+        return self.world_images
 
 GAME_IMAGES = GameImageLoader()

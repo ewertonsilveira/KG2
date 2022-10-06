@@ -1,7 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
-from states.gameImages import GAME_IMAGES
+from states.game_images import GAME_IMAGES
 from states.settings import * 
 
 class Bullet(pygame.sprite.Sprite):
