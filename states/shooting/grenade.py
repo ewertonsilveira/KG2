@@ -31,32 +31,34 @@ class Grenade(pygame.sprite.Sprite):
         dy = self.vel_y
 
          #check for collision with level
-        for tile in obstacle_list:
-            #check collision with walls
-            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                self.direction *= -1
-                dx = self.direction * self.speed
-            #check for collision in the y direction
-            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                self.speed = 0
-                #check if below the ground, i.e. thrown up
-                if self.vel_y < 0:
-                    self.vel_y = 0
-                    dy = tile[1].bottom - self.rect.top
-                #check if above the ground, i.e. falling
-                elif self.vel_y >= 0:
-                    self.vel_y = 0
-                    dy = tile[1].top - self.rect.bottom 
+        if self.timer >= 0:
+            for tile in obstacle_list:
+                #check collision with walls
+                if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                    self.direction *= -1
+                    dx = self.direction * self.speed
+                #check for collision in the y direction
+                if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    self.speed = 0
+                    #check if below the ground, i.e. thrown up
+                    if self.vel_y < 0:
+                        self.vel_y = 0
+                        dy = tile[1].bottom - self.rect.top
+                    #check if above the ground, i.e. falling
+                    elif self.vel_y >= 0:
+                        self.vel_y = 0
+                        dy = tile[1].top - self.rect.bottom 
 
-        self.rect.y +=dy
-        self.rect.x += dx
+            # update grenade
+            self.rect.y +=dy
+            self.rect.x += dx
 
         self.timer -= 1
         if self.timer <= 0:
             img = self.images[int(self.counter/10)]
-            self.image = img
-            newRect = self.image.get_rect()
+            newRect = img.get_rect()            
             newRect.center = self.rect.center
+            self.image = img
             self.rect = newRect
             self.counter -= 1
 

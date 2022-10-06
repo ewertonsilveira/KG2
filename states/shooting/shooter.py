@@ -74,7 +74,7 @@ class Shooter(BaseState):
                 self.shoot = True
             if event.key == pygame.K_q:
                 self.grenade = True
-            if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.world.player.alive:
+            if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.world.player.alive and not self.world.player.in_air:
                 self.world.player.jump = True
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 self.moving_left = True
