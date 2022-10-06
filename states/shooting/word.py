@@ -17,8 +17,8 @@ class World(object):
 
     def process_data(self, data):
         imgs = GAME_IMAGES.get_world_images()
-        for x, row in enumerate(data):
-            for y, t in enumerate(row):
+        for y, row in enumerate(data):
+            for x, t in enumerate(row):
                 tile = int(t)
                 if tile >= 0:
                     x_axis = x * TILE_SIZE
@@ -56,6 +56,9 @@ class World(object):
 
         return self.player, self.health_bar, self.enemies
 
+    def draw(self, surface):
+        for tile in self.obstacle_list:
+            surface.blit(tile[0], tile[1])
 
     def create_enemies(self, x, y):
         return EnemySoldier("enemy", x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)

@@ -40,7 +40,12 @@ class Shooter(BaseState):
 
 
     def draw(self, surface):
+        # draw background
         self.draw_bg(surface, COLORS.bgColor)
+
+        # draw world map
+        self.world.draw(surface)
+
         pygame.draw.line(surface, COLORS.groundColor, (0, GROUND), (surface.get_width(), GROUND))
 
         for _, enemy in enumerate(self.world.enemies):
