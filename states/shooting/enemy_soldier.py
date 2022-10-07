@@ -18,9 +18,11 @@ class EnemySoldier(Soldier):
         self.idling_counter = 0
         self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, TILE_SIZE)
 
-    def ai(self, surface, obstacle_list, target):
+    def ai(self, surface, screen_scroll, obstacle_list, target):
+
         if not self.alive or not target.alive:
-            # self.update_action(0) # idle
+            # scrolling with the world
+            self.rect.x += screen_scroll
             return
         
         if self.idling == False and random.randint(1, 300) == 1:
@@ -55,6 +57,9 @@ class EnemySoldier(Soldier):
                 self.idling_counter -= 1
                 if self.idling_counter <= 0:
                     self.idling = False
+
+        # scrolling with the world
+        self.rect.x += screen_scroll
 
 
     def throw_grenade(self, surface):

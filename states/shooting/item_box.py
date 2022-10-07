@@ -22,7 +22,7 @@ class ItemBox(pygame.sprite.Sprite):
         self.rect.midtop = (x + TILE_SIZE // 2, y - (TILE_SIZE - self.image.get_height()))
 
 
-    def update(self, target):
+    def update(self, screen_scroll, target):        
         # check if the player has picked up the box
         if pygame.sprite.collide_rect(self, target):
             # check the type of item
@@ -35,3 +35,5 @@ class ItemBox(pygame.sprite.Sprite):
             
             # remove item
             self.kill()
+            
+        self.rect.x += screen_scroll

@@ -3,7 +3,7 @@ from states.colors import COLORS
 from states.fonts import FONTS
 from states.game_images import GAME_IMAGES
 
-from states.settings import COLS, ENEMY_BASE_HEALTH, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES, ENEMY_RUN_SPEED, GROUND, PLAYERS_SCALE, SCREEN_HEIGHT, SOLDIER_BASE_HEALTH, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES, TILE_SIZE
+from states.settings import ENEMY_BASE_HEALTH, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES, ENEMY_RUN_SPEED, GROUND, PLAYERS_SCALE, SCREEN_HEIGHT, SOLDIER_BASE_HEALTH, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES, TILE_SIZE
 from states.shooting.decoration import Decoration
 from states.shooting.enemy_soldier import EnemySoldier
 from states.shooting.exit import Exit
@@ -11,7 +11,6 @@ from states.shooting.health_bar import HealthBar
 from states.shooting.item_box import AMMO, GRENADE, HEALTH, ItemBox
 from states.shooting.soldier import ENEMY_TYPE, PLAYER_TYPE, Soldier
 from states.shooting.water import Water
-
 
 
 class World(object):
@@ -79,7 +78,7 @@ class World(object):
 
         # draw enemies
         for _, enemy in enumerate(self.enemies):
-            enemy.ai(surface, self.obstacle_list, self.player)
+            enemy.ai(surface, self.screen_scroll, self.obstacle_list, self.player)
             enemy.draw(surface)            
             enemy.update(surface, self.obstacle_list, [self.player])            
         
@@ -98,16 +97,16 @@ class World(object):
         for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
 
 
-        self.item_box_group.update(self.player)
+        self.item_box_group.update(self.screen_scroll, self.player)
         self.item_box_group.draw(surface)
 
-        self.exit_group.update(self.player)
+        self.exit_group.update(self.screen_scroll)
         self.exit_group.draw(surface)
 
-        self.water_group.update(self.player)
+        self.water_group.update(self.screen_scroll)
         self.water_group.draw(surface)
 
-        self.decoration_group.update(self.player)
+        self.decoration_group.update(self.screen_scroll)
         self.decoration_group.draw(surface)
 
     def draw_bg(self, surface, color):
