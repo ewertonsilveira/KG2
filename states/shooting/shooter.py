@@ -63,7 +63,7 @@ class Shooter(BaseState):
             else:
                 self.world.player.update_action(0) #1 idle
 
-            self.world.player.move(self.world.obstacle_list, self.moving_left, self.moving_right)
+            self.world.screen_scroll = self.world.player.move(self.world.obstacle_list, self.moving_left, self.moving_right)
         
 
     def get_event(self, event):

@@ -9,8 +9,10 @@ from states.shooting.enemy_soldier import EnemySoldier
 from states.shooting.exit import Exit
 from states.shooting.health_bar import HealthBar
 from states.shooting.item_box import AMMO, GRENADE, HEALTH, ItemBox
-from states.shooting.soldier import Soldier
+from states.shooting.soldier import ENEMY_TYPE, PLAYER_TYPE, Soldier
 from states.shooting.water import Water
+
+
 
 class World(object):
     def __init__(self):        
@@ -18,6 +20,8 @@ class World(object):
         self.enemies = []
         self.player = None
         self.health_bar = None
+        self.bg_scroll = 0
+        self.screen_scroll = 0
         self.exit_group = pygame.sprite.Group()
         self.water_group = pygame.sprite.Group()
         self.item_box_group = pygame.sprite.Group()
@@ -68,9 +72,12 @@ class World(object):
         return self.player, self.health_bar, self.enemies
 
     def draw(self, surface):
+
         for tile in self.obstacle_list:
+            tile[1].x += self.screen_scroll
             surface.blit(tile[0], tile[1])
 
+        # draw enemies
         for _, enemy in enumerate(self.enemies):
             enemy.ai(surface, self.obstacle_list, self.player)
             enemy.draw(surface)            
@@ -123,11 +130,11 @@ class World(object):
         surface.blit(img, (x, y))
 
     def create_enemies(self, x, y):
-        return EnemySoldier("enemy", x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
+        return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
         
 
     def create_player(self, x, y):
-        return Soldier("player", x, y, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
+        return Soldier(PLAYER_TYPE, x, y, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
 
     def create_health_bar(self):
         return HealthBar(10,10, self.player.health, self.player.max_health)

@@ -2,6 +2,7 @@ from email.headerregistry import Group
 import pygame
 import os
 import random
+from states.colors import COLORS
 
 from states.shooting.bullet import Bullet
 
@@ -15,7 +16,7 @@ class EnemySoldier(Soldier):
         self.move_counter = 0
         self.idling = False
         self.idling_counter = 0
-        self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, 25)
+        self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, TILE_SIZE)
 
     def ai(self, surface, obstacle_list, target):
         if not self.alive or not target.alive:
@@ -40,7 +41,11 @@ class EnemySoldier(Soldier):
                 self.move_counter += 1
 
                 #update ai vision as the enemy moves
-                self.vision.center = (self.rect.centerx + 75 * self.direction, self.rect.centery)
+                print((ENEMY_VISION_RANGE // 2))
+                self.vision.center = (self.rect.centerx + (ENEMY_VISION_RANGE // 2) * self.direction, self.rect.centery)
+                
+                # ENEMY VISION RECTANGLE
+                # pygame.draw.rect(surface, COLORS.RED, self.vision)
 
                 # move direction
                 if self.move_counter > TILE_SIZE:

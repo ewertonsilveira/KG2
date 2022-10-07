@@ -7,6 +7,9 @@ from states.shooting.bullet import Bullet
 from states.settings import *
 from states.shooting.grenade import Grenade 
 
+ENEMY_TYPE='enemy'
+PLAYER_TYPE='player'
+
 class Soldier(pygame.sprite.Sprite):
     def __init__(self, chart_type, x, y, health, scale, speed, direction, ammo, grenade):
         pygame.sprite.Sprite.__init__(self)
@@ -77,6 +80,7 @@ class Soldier(pygame.sprite.Sprite):
         # reset movement variables
         dx = 0
         dy = 0
+        scroll = 0
         # assign movement variables if moving left or right
         if moving_left:            
             dx = -self.speed
@@ -120,6 +124,14 @@ class Soldier(pygame.sprite.Sprite):
         # update rectangle pos
         self.rect.x += dx
         self.rect.y += dy
+
+        if self.char_type == PLAYER_TYPE:
+            if self.rect.right > SCREEN_WIDTH - SCROLL_THRESHOLD:
+                self.rect.x -= dx 
+                scroll = -dx
+
+        return scroll
+
     
     def update_action(self, new_action):
         # update only if is a new action 
