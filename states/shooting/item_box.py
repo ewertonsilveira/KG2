@@ -19,7 +19,7 @@ class ItemBox(pygame.sprite.Sprite):
         }
         self.image = item_boxes[self.item_type]
         self.rect = self.image.get_rect()
-        self.rect.midtop = (x + TILE_SIZE // 2, y - (TILE_SIZE - self.image.get_height()))
+        self.rect.midtop = (x + TILE_SIZE // 2, y + (TILE_SIZE - self.image.get_height()))
 
 
     def update(self, screen_scroll, target):        

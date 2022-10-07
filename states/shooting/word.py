@@ -62,7 +62,7 @@ class World(object):
                         # item grenade 
                         self.item_box_group.add(ItemBox(GRENADE, x_axis, y_axis))
                     elif tile == 19:
-                        pass # item health ammo
+                        # item health ammo
                         self.item_box_group.add(ItemBox(HEALTH, x_axis, y_axis))
                     elif tile == 20:
                         self.exit_group.add(Exit(img, x_axis, y_axis))
@@ -108,9 +108,6 @@ class World(object):
 
         self.decoration_group.update(self.screen_scroll)
         self.decoration_group.draw(surface)
-
-        self.exit_group.update(self.screen_scroll)
-        self.exit_group.draw(surface)
 
     def draw_bg(self, surface, color):
         surface.fill(color)
