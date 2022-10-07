@@ -43,7 +43,6 @@ class EnemySoldier(Soldier):
                 self.move_counter += 1
 
                 #update ai vision as the enemy moves
-                print((ENEMY_VISION_RANGE // 2))
                 self.vision.center = (self.rect.centerx + (ENEMY_VISION_RANGE // 2) * self.direction, self.rect.centery)
                 
                 # ENEMY VISION RECTANGLE

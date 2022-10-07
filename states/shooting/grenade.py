@@ -24,10 +24,10 @@ class Grenade(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-    def update(self, obstacle_list, player, enemies):
+    def update(self, screen_scroll, obstacle_list, player, enemies):
         # gravity affecting the grenade
         self.vel_y += GRAVITY
-        dx = self.direction * self.speed
+        dx = self.direction * self.speed + screen_scroll
         dy = self.vel_y
 
          #check for collision with level
@@ -50,8 +50,8 @@ class Grenade(pygame.sprite.Sprite):
                         dy = tile[1].top - self.rect.bottom 
 
             # update grenade
-            self.rect.y +=dy
             self.rect.x += dx
+            self.rect.y +=dy
 
         self.timer -= 1
         if self.timer <= 0:

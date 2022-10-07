@@ -79,13 +79,13 @@ class World(object):
         # draw enemies
         for _, enemy in enumerate(self.enemies):
             enemy.ai(surface, self.screen_scroll, self.obstacle_list, self.player)
-            enemy.draw(surface)            
-            enemy.update(surface, self.obstacle_list, [self.player])            
+            # enemy.draw(surface)            
+            # enemy.update(surface, self.screen_scroll, self.obstacle_list, [self.player])            
         
 
         # player
         self.player.draw(surface)
-        self.player.update(surface, self.obstacle_list, self.enemies)
+        self.player.update(surface, self.screen_scroll, self.obstacle_list, self.enemies)
         self.health_bar.draw(surface, self.player.health)
 
         # show ammo
@@ -109,20 +109,25 @@ class World(object):
         self.decoration_group.update(self.screen_scroll)
         self.decoration_group.draw(surface)
 
+        self.exit_group.update(self.screen_scroll)
+        self.exit_group.draw(surface)
+
     def draw_bg(self, surface, color):
         surface.fill(color)
 
         sky_img = GAME_IMAGES.get_sky_image()
-        surface.blit(sky_img, (0,0))
 
+        width = sky_img.get_width()
         m_img = GAME_IMAGES.get_mountain_image()
-        surface.blit(m_img, (0, SCREEN_HEIGHT - m_img.get_height() - SCREEN_HEIGHT * 0.45))
-
         pine1_img = GAME_IMAGES.get_pine1_image()
-        surface.blit(pine1_img, (0, SCREEN_HEIGHT - pine1_img.get_height() - SCREEN_HEIGHT * 0.25))
-
         pine2_img = GAME_IMAGES.get_pine2_image()
-        surface.blit(pine2_img, (0, SCREEN_HEIGHT - pine2_img.get_height() - SCREEN_HEIGHT * 0.05))
+        
+        for idx in range(6):
+            w = idx * width
+            surface.blit(sky_img,   (w - self.bg_scroll * 0.5, 0))
+            surface.blit(m_img,     (w - self.bg_scroll * 0.6, SCREEN_HEIGHT - m_img.get_height() - SCREEN_HEIGHT * 0.40))
+            surface.blit(pine1_img, (w - self.bg_scroll * 0.7, SCREEN_HEIGHT - pine1_img.get_height() - SCREEN_HEIGHT * 0.20))
+            surface.blit(pine2_img, (w - self.bg_scroll * 0.8, SCREEN_HEIGHT - pine2_img.get_height()))
 
     def draw_text(self, surface, text, font, text_col, x, y):
         img = font.render(text, True, text_col)

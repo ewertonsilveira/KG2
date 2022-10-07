@@ -57,7 +57,7 @@ class Soldier(pygame.sprite.Sprite):
     def ai(self, surface, obstacle_list, target):
         pass
 
-    def update(self, surface, obstacle_list, enemies):
+    def update(self, surface, screen_scroll, obstacle_list, enemies):
         self.update_animation()
         # keep checking if soldier is alive
         self.check_alive()
@@ -70,10 +70,10 @@ class Soldier(pygame.sprite.Sprite):
         if self.grenade_cooldown > 0:
             self.grenade_cooldown -= 1
 
-        self.bullet_group.update(obstacle_list, enemies, self.bullet_group)
+        self.bullet_group.update(screen_scroll, obstacle_list, enemies, self.bullet_group)
         self.bullet_group.draw(surface)
 
-        self.grenade_group.update(obstacle_list, self, enemies)
+        self.grenade_group.update(screen_scroll, obstacle_list, self, enemies)
         self.grenade_group.draw(surface)
 
     def move(self, obstacle_list, moving_left, moving_right):
@@ -126,7 +126,8 @@ class Soldier(pygame.sprite.Sprite):
         self.rect.y += dy
 
         if self.char_type == PLAYER_TYPE:
-            if self.rect.right > SCREEN_WIDTH - SCROLL_THRESHOLD:
+            if self.rect.right > SCREEN_WIDTH - SCROLL_THRESHOLD or \
+                self.rect.left < SCROLL_THRESHOLD:
                 self.rect.x -= dx 
                 scroll = -dx
 
