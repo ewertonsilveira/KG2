@@ -1,6 +1,7 @@
 import pygame
 
 from states.fonts import FONTS
+from states.game_images import GAME_IMAGES
 
 class BaseState(object):
     def __init__(self):

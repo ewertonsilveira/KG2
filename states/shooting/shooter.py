@@ -40,8 +40,9 @@ class Shooter(BaseState):
 
 
     def draw(self, surface):
+
         # draw background
-        self.draw_bg(surface, COLORS.bgColor)
+        self.world.draw_bg(surface, COLORS.bgColor)
 
         # draw world map
         self.world.draw(surface)

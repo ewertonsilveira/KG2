@@ -15,7 +15,7 @@ class EnemySoldier(Soldier):
         self.move_counter = 0
         self.idling = False
         self.idling_counter = 0
-        self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, 10)
+        self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, 25)
 
     def ai(self, surface, obstacle_list, target):
         if not self.alive or not target.alive:

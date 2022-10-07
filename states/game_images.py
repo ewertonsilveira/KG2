@@ -5,9 +5,14 @@ from states.settings import GRENADE_EXPLOSION_SCALE, TILE_SIZE, TILE_TYPES
 class GameImageLoader(object):
     def __init__(self):
         self.world_images = []
+        self.sky_image = None
+        self.pine1_image = None
+        self.pine2_image = None
         self.bullet_image = None
         self.grenade_image = None
         self.ammo_box_image = None
+        self.mountain_image = None
+        self.health_box_image = None
         self.health_box_image = None
         self.grenade_box_image = None
         self.grenade_explosion_images = None
@@ -51,6 +56,30 @@ class GameImageLoader(object):
             self.ammo_box_image = pygame.image.load("public/graphics/icons/ammo_box.png").convert_alpha();
             print('ammo_box img')
         return self.ammo_box_image
+    
+    def get_sky_image(self):
+        if self.sky_image == None:
+            self.sky_image = pygame.image.load("public/graphics/background/sky_cloud.png").convert_alpha();
+            print('sky_image img')
+        return self.sky_image
+    
+    def get_mountain_image(self):
+        if self.mountain_image == None:
+            self.mountain_image = pygame.image.load("public/graphics/background/mountain.png").convert_alpha();
+            print('mountain img')
+        return self.mountain_image
+
+    def get_pine1_image(self):
+        if self.pine1_image == None:
+            self.pine1_image = pygame.image.load("public/graphics/background/pine1.png").convert_alpha();
+            print('pine1 img')
+        return self.pine1_image
+
+    def get_pine2_image(self):
+        if self.pine2_image == None:
+            self.pine2_image = pygame.image.load("public/graphics/background/pine2.png").convert_alpha();
+            print('pine2 img')
+        return self.pine2_image
 
     def get_world_images(self):
         if len(self.world_images) == 0:

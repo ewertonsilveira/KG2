@@ -3,7 +3,7 @@ from states.colors import COLORS
 from states.fonts import FONTS
 from states.game_images import GAME_IMAGES
 
-from states.settings import COLS, ENEMY_BASE_HEALTH, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES, ENEMY_RUN_SPEED, GROUND, PLAYERS_SCALE, SOLDIER_BASE_HEALTH, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES, TILE_SIZE
+from states.settings import COLS, ENEMY_BASE_HEALTH, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES, ENEMY_RUN_SPEED, GROUND, PLAYERS_SCALE, SCREEN_HEIGHT, SOLDIER_BASE_HEALTH, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES, TILE_SIZE
 from states.shooting.decoration import Decoration
 from states.shooting.enemy_soldier import EnemySoldier
 from states.shooting.exit import Exit
@@ -102,6 +102,21 @@ class World(object):
 
         self.decoration_group.update(self.player)
         self.decoration_group.draw(surface)
+
+    def draw_bg(self, surface, color):
+        surface.fill(color)
+
+        sky_img = GAME_IMAGES.get_sky_image()
+        surface.blit(sky_img, (0,0))
+
+        m_img = GAME_IMAGES.get_mountain_image()
+        surface.blit(m_img, (0, SCREEN_HEIGHT - m_img.get_height() - SCREEN_HEIGHT * 0.45))
+
+        pine1_img = GAME_IMAGES.get_pine1_image()
+        surface.blit(pine1_img, (0, SCREEN_HEIGHT - pine1_img.get_height() - SCREEN_HEIGHT * 0.25))
+
+        pine2_img = GAME_IMAGES.get_pine2_image()
+        surface.blit(pine2_img, (0, SCREEN_HEIGHT - pine2_img.get_height() - SCREEN_HEIGHT * 0.05))
 
     def draw_text(self, surface, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
