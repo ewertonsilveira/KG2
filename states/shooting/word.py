@@ -99,6 +99,7 @@ class World(object):
         for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
 
 
+
         self.item_box_group.update(self.screen_scroll, self.player)
         self.item_box_group.draw(surface)
 
@@ -134,11 +135,28 @@ class World(object):
 
     def create_enemies(self, x, y):
         return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
-        
 
     def create_player(self, x, y):
         return Soldier(PLAYER_TYPE, x, y, SOLDIER_BASE_HEALTH, PLAYERS_SCALE, 5, 1, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES)
 
     def create_health_bar(self):
         return HealthBar(10,10, self.player.health, self.player.max_health)
-        
+
+    def update_player_action(self, surface, moving_left, moving_right, shoot, grenade):
+        if self.player.alive:
+            # shoot bullets
+            if shoot:
+                self.player.shoot(surface)
+            elif grenade:
+                self.player.throw_grenade(surface)
+
+            # other player actions
+            if self.player.in_air:
+                self.player.update_action(2) #1 run
+            elif moving_left or moving_right:
+                self.player.update_action(1) #1 run
+            else:
+                self.player.update_action(0) #1 idle
+
+            self.screen_scroll = self.player.move(self.bg_scroll, self.level_length, self.obstacle_list, moving_left, moving_right)
+            self.bg_scroll -= self.screen_scroll 
