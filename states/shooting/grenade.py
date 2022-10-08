@@ -1,7 +1,6 @@
-from email.headerregistry import Group
 import pygame
 import os
-from states.game_images import GAME_IMAGES
+from states.content_loader import LOADER
 
 from states.settings import *
 
@@ -14,12 +13,12 @@ class Grenade(pygame.sprite.Sprite):
         self.speed = GRENADE_SPEED
         self.timer = GRENADE_TIMER
         self.direction = direction
-        img = GAME_IMAGES.get_grenade_image()
+        img = LOADER.get_grenade_image()
         img = pygame.transform.scale(img, (int(img.get_width()*GRENADE_SCALE), int(img.get_height()*GRENADE_SCALE))) 
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
-        self.images = GAME_IMAGES.get_grenade_explosion_images()
+        self.images = LOADER.get_grenade_explosion_images()
         self.counter = (len(self.images)-1 ) * 10
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -60,6 +59,7 @@ class Grenade(pygame.sprite.Sprite):
             newRect.center = self.rect.center
             self.image = img
             self.rect = newRect
+            self.rect.x += dx
             self.counter -= 1
 
         if self.counter < 0:

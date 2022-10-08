@@ -2,8 +2,9 @@ import pygame
 
 from states.settings import GRENADE_EXPLOSION_SCALE, TILE_SIZE, TILE_TYPES
 
-class GameImageLoader(object):
+class ContentLoader(object):
     def __init__(self):
+        # images
         self.world_images = []
         self.sky_image = None
         self.pine1_image = None
@@ -19,6 +20,9 @@ class GameImageLoader(object):
         self.restart_btn_image = None
         self.grenade_box_image = None
         self.grenade_explosion_images = None
+
+        # Music
+        self.base_music = "public/audio/music2.mp3";
     
     def get_bullet_image(self):
         if self.bullet_image == None:        
@@ -111,4 +115,4 @@ class GameImageLoader(object):
             print('game world imgs')
         return self.world_images
 
-GAME_IMAGES = GameImageLoader()
+LOADER = ContentLoader()

@@ -1,7 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
-from states.game_images import GAME_IMAGES
+from states.content_loader import LOADER
 from states.settings import * 
 
 class Bullet(pygame.sprite.Sprite):
@@ -11,7 +11,7 @@ class Bullet(pygame.sprite.Sprite):
         self.bullet_image = None
         self.speed = BULLET_SPEED
         self.direction = direction
-        img = GAME_IMAGES.get_bullet_image()
+        img = LOADER.get_bullet_image()
         img = pygame.transform.scale(img, (int(img.get_width()*BULLETS_SCALE), int(img.get_height()*BULLETS_SCALE))) 
         self.image = img
         self.rect = self.image.get_rect()

@@ -1,8 +1,5 @@
-from email.headerregistry import Group
 import pygame
-import os
 from states.colors import COLORS
-from states.game_images import GAME_IMAGES
 from states.settings import * 
 
 class HealthBar():

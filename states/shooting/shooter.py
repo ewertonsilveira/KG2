@@ -1,14 +1,10 @@
 import pygame
 from states.colors import COLORS
-from states.fonts import FONTS
-from states.game_images import GAME_IMAGES
+from states.content_loader import LOADER
 from states.shooting.button import Button
-from states.shooting.enemy_soldier import EnemySoldier
-from states.shooting.health_bar import HealthBar
 
 from states.shooting.level_loader import LEVEL_LOADER
 from states.shooting.word import World
-
 
 from ..base import BaseState
 
@@ -16,6 +12,7 @@ from states.settings import *
 
 class Shooter(BaseState):
     def __init__(self):
+
         super(Shooter, self).__init__()
         self.next_state = "MENU"
         self.start_game = False
@@ -29,16 +26,24 @@ class Shooter(BaseState):
         self.shoot = False
         self.grenade = False
 
+    def startup(self, persistent):
+        self.persist = persistent
+
         # create World
         self.create_world(1)
 
         # buttons
-        start_img = GAME_IMAGES.get_start_btn_image()
+        start_img = LOADER.get_start_btn_image()
         self.start_button = Button(int(SCREEN_WIDTH // 2) - int(start_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), start_img, 1)
-        exit_img = GAME_IMAGES.get_exit_btn_image()
+        exit_img = LOADER.get_exit_btn_image()
         self.exit_button = Button(int(SCREEN_WIDTH // 2) - int(exit_img.get_width() // 2), int(SCREEN_HEIGHT // 2 + 50), exit_img, 1)
-        restart_img = GAME_IMAGES.get_restart_btn_image()
+        restart_img = LOADER.get_restart_btn_image()
         self.restart_button = Button(int(SCREEN_WIDTH // 2) - int(restart_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), restart_img, 1)
+
+        # music
+        pygame.mixer.music.load(LOADER.base_music)
+        pygame.mixer.music.set_volume(BASE_VOLUME - 0.1)
+        pygame.mixer.music.play(-1, 0.0, 3000)
 
 
     def create_world(self, level):
@@ -71,7 +76,7 @@ class Shooter(BaseState):
             self.world.screen_scroll = 0
             # reset selection
             if self.restart_button.draw(surface):
-                self.create_world(self.level)    
+                self.create_world(self.level)
             
         
     def run_game(self, surface):
@@ -83,8 +88,12 @@ class Shooter(BaseState):
         self.world.draw(surface)
 
         # update player actions
-        self.world.update_player_action(surface, self.moving_left, self.moving_right, self.shoot, self.grenade)
-
+        level_complete = self.world.update_player_action(surface, self.moving_left, self.moving_right, self.shoot, self.grenade)
+        if level_complete:
+            self.level += 1
+            self.world.bg_scroll = 0
+            if self.level <= MAX_LEVELS:
+                self.create_world(self.level)
 
     def get_event(self, event):
         if event.type == pygame.QUIT:

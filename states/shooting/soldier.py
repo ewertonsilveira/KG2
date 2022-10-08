@@ -153,7 +153,7 @@ class Soldier(pygame.sprite.Sprite):
                 self.rect.x -= dx
                 scroll = -dx
 
-        return scroll
+        return scroll, level_complete
 
     
     def update_action(self, new_action):

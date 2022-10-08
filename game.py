@@ -27,6 +27,7 @@ class Game(object):
             self.done = True
         elif self.state.done:
             self.flip_state()
+
         self.state.update(dt)
 
     def draw(self):

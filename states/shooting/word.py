@@ -1,7 +1,7 @@
 import pygame
 from states.colors import COLORS
 from states.fonts import FONTS
-from states.game_images import GAME_IMAGES
+from states.content_loader import LOADER
 
 from states.settings import ENEMY_BASE_HEALTH, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES, ENEMY_RUN_SPEED, GROUND, PLAYERS_SCALE, SCREEN_HEIGHT, SOLDIER_BASE_HEALTH, SOLDIER_INITIAL_BULLETS, SOLDIER_INITIAL_GRENADES, TILE_SIZE
 from states.shooting.decoration import Decoration
@@ -28,7 +28,7 @@ class World(object):
         self.decoration_group = pygame.sprite.Group()
 
     def process_data(self, data):
-        imgs = GAME_IMAGES.get_world_images()
+        imgs = LOADER.get_world_images()
         self.level_length = len(data[0])
         for y, row in enumerate(data):
             for x, t in enumerate(row):
@@ -92,11 +92,11 @@ class World(object):
 
         # show ammo
         self.draw_text(surface, 'AMMO: ', FONTS.secondary_font, COLORS.WHITE, 10, 35)
-        for x in range(self.player.ammo): surface.blit(GAME_IMAGES.get_bullet_image(), (80 + (x * 10), 40))
+        for x in range(self.player.ammo): surface.blit(LOADER.get_bullet_image(), (80 + (x * 10), 40))
 
         # show grenades
         self.draw_text(surface, 'GRENADES:', FONTS.secondary_font, COLORS.WHITE, 10, 60)
-        for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
+        for x in range(self.player.grenade): surface.blit(LOADER.get_grenade_image(), (125 + (x * 15), 60))
 
         self.item_box_group.update(self.screen_scroll, self.player)
         self.item_box_group.draw(surface)
@@ -113,12 +113,12 @@ class World(object):
     def draw_bg(self, surface, color):
         surface.fill(color)
 
-        sky_img = GAME_IMAGES.get_sky_image()
+        sky_img = LOADER.get_sky_image()
 
         width = sky_img.get_width()
-        m_img = GAME_IMAGES.get_mountain_image()
-        pine1_img = GAME_IMAGES.get_pine1_image()
-        pine2_img = GAME_IMAGES.get_pine2_image()
+        m_img = LOADER.get_mountain_image()
+        pine1_img = LOADER.get_pine1_image()
+        pine2_img = LOADER.get_pine2_image()
         
         for idx in range(6):
             w = idx * width
@@ -156,5 +156,7 @@ class World(object):
             else:
                 self.player.update_action(0) #1 idle
 
-            self.screen_scroll = self.player.move(self.bg_scroll, self.level_length, self.water_group, self.exit_group, self.obstacle_list, moving_left, moving_right)
-            self.bg_scroll -= self.screen_scroll 
+            self.screen_scroll, self.level_complete = self.player.move(self.bg_scroll, self.level_length, self.water_group, self.exit_group, self.obstacle_list, moving_left, moving_right)
+            self.bg_scroll -= self.screen_scroll
+
+        return self.level_complete

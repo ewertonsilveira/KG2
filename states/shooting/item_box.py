@@ -1,7 +1,5 @@
-from email.headerregistry import Group
 import pygame
-import os
-from states.game_images import GAME_IMAGES
+from states.content_loader import LOADER
 from states.settings import * 
 
 HEALTH='health'
@@ -13,9 +11,9 @@ class ItemBox(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
         item_boxes = {
-            HEALTH   : GAME_IMAGES.get_health_box_image(),
-            AMMO      : GAME_IMAGES.get_ammo_box_image(),
-            GRENADE   : GAME_IMAGES.get_grenade_box_image()
+            HEALTH   : LOADER.get_health_box_image(),
+            AMMO      : LOADER.get_ammo_box_image(),
+            GRENADE   : LOADER.get_grenade_box_image()
         }
         self.image = item_boxes[self.item_type]
         self.rect = self.image.get_rect()

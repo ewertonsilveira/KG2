@@ -1,7 +1,6 @@
 import pygame
 
 from states.fonts import FONTS
-from states.game_images import GAME_IMAGES
 
 class BaseState(object):
     def __init__(self):
@@ -10,8 +9,6 @@ class BaseState(object):
         self.next_state = None
         self.screen_rect = pygame.display.get_surface().get_rect()
         self.persist = {}
-
-        #self.font = pygame.font.SysFont(None, 50)
 
     def startup(self, persistent):
         self.persist = persistent
