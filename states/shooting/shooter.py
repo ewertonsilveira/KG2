@@ -16,6 +16,7 @@ class Shooter(BaseState):
         super(Shooter, self).__init__()
         self.next_state = "MENU"
         self.start_game = False
+        self.start_intro = False
 
         # group of enemies
         self.enemies = []
@@ -66,11 +67,19 @@ class Shooter(BaseState):
             if self.start_button.draw(surface):
                 self.create_world(self.level)
                 self.start_game =  True
+                self.start_intro = True
 
             if self.exit_button.draw(surface):
                 self.done = True
         else:
             self.run_game(surface)
+
+
+        #show intro
+        if self.start_intro == True:
+            if self.intro_fade.run_effect(surface):
+                self.start_intro = False
+                self.intro_fade.fade_counter = 0
 
         if not self.world.player.alive:
             self.world.bg_scroll = 0
