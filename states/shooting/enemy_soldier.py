@@ -18,7 +18,7 @@ class EnemySoldier(Soldier):
         self.idling_counter = 0
         self.vision = pygame.Rect(0, 0, ENEMY_VISION_RANGE, TILE_SIZE)
 
-    def ai(self, surface, screen_scroll, obstacle_list, target):
+    def ai(self, surface, bg_scroll, level_length, screen_scroll, obstacle_list, target):
 
         if not self.alive or not target.alive:
             # scrolling with the world
@@ -38,7 +38,7 @@ class EnemySoldier(Soldier):
             if self.idling == False:
                 ai_move_right = True if self.direction == 1 else False
                 ai_move_left = not ai_move_right
-                self.move(obstacle_list, ai_move_left, ai_move_right)
+                self.move(bg_scroll, level_length, obstacle_list, ai_move_left, ai_move_right)
                 self.update_action(1) # run
                 self.move_counter += 1
 

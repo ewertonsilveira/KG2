@@ -21,6 +21,7 @@ class World(object):
         self.health_bar = None
         self.bg_scroll = 0
         self.screen_scroll = 0
+        self.level_length = 0
         self.exit_group = pygame.sprite.Group()
         self.water_group = pygame.sprite.Group()
         self.item_box_group = pygame.sprite.Group()
@@ -28,6 +29,7 @@ class World(object):
 
     def process_data(self, data):
         imgs = GAME_IMAGES.get_world_images()
+        self.level_length = len(data[0])
         for y, row in enumerate(data):
             for x, t in enumerate(row):
                 tile = int(t)
@@ -78,9 +80,9 @@ class World(object):
 
         # draw enemies
         for _, enemy in enumerate(self.enemies):
-            enemy.ai(surface, self.screen_scroll, self.obstacle_list, self.player)
-            # enemy.draw(surface)            
-            # enemy.update(surface, self.screen_scroll, self.obstacle_list, [self.player])            
+            enemy.ai(surface, self.bg_scroll, self.level_length, self.screen_scroll, self.obstacle_list, self.player)
+            enemy.draw(surface)
+            enemy.update(surface, self.screen_scroll, self.obstacle_list, [self.player])            
         
 
         # player

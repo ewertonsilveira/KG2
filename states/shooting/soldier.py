@@ -76,7 +76,7 @@ class Soldier(pygame.sprite.Sprite):
         self.grenade_group.update(screen_scroll, obstacle_list, self, enemies)
         self.grenade_group.draw(surface)
 
-    def move(self, obstacle_list, moving_left, moving_right):
+    def move(self, bg_scroll, level_length, obstacle_list, moving_left, moving_right):
         # reset movement variables
         dx = 0
         dy = 0
@@ -109,6 +109,10 @@ class Soldier(pygame.sprite.Sprite):
             #check collision in the x direction
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                 dx = 0
+                #if the ai has hit a wall then make it turn around
+                if self.char_type == ENEMY_TYPE:
+                    self.direction *= -1
+                    self.move_counter = 0
             #check for collision in the y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                 #check if below the ground, i.e. jumping
@@ -126,9 +130,9 @@ class Soldier(pygame.sprite.Sprite):
         self.rect.y += dy
 
         if self.char_type == PLAYER_TYPE:
-            if self.rect.right > SCREEN_WIDTH - SCROLL_THRESHOLD or \
-                self.rect.left < SCROLL_THRESHOLD:
-                self.rect.x -= dx 
+            if (self.rect.right > SCREEN_WIDTH - SCROLL_THRESHOLD and bg_scroll < (level_length * TILE_SIZE) - SCREEN_WIDTH)\
+                or (self.rect.left < SCROLL_THRESHOLD and bg_scroll > abs(dx)):
+                self.rect.x -= dx
                 scroll = -dx
 
         return scroll
