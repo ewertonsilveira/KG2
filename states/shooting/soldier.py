@@ -125,6 +125,12 @@ class Soldier(pygame.sprite.Sprite):
                     self.in_air = False
                     dy = tile[1].top - self.rect.bottom
 
+        
+        # check if going off the edge of screen
+        if self.char_type == PLAYER_TYPE:
+            if self.rect.left + dx < 0 or self.rect.right + dx > SCREEN_WIDTH:
+                dx = 0
+        
         # update rectangle pos
         self.rect.x += dx
         self.rect.y += dy
