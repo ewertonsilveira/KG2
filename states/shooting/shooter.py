@@ -85,10 +85,12 @@ class Shooter(BaseState):
             self.world.bg_scroll = 0
             self.world.screen_scroll = 0
             if self.death_fade.run_effect(surface):
-                # reset fade counter to zero for next effect
-                self.death_fade.fade_counter = 0
                 # reset selection                
                 if self.restart_button.draw(surface):
+                    # reset start intro after player died
+                    self.start_intro = True
+                    # reset fade counter to zero for next effect
+                    self.death_fade.fade_counter = 0
                     self.create_world(self.level)
             
         
@@ -101,6 +103,7 @@ class Shooter(BaseState):
         level_complete = self.world.update_player_action(surface, self.moving_left, self.moving_right, self.shoot, self.grenade)
         if level_complete:
             self.level += 1
+            self.start_intro = True
             self.world.bg_scroll = 0
             if self.level <= MAX_LEVELS:
                 self.create_world(self.level)
