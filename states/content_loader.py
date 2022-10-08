@@ -1,6 +1,6 @@
 import pygame
 
-from states.settings import GRENADE_EXPLOSION_SCALE, TILE_SIZE, TILE_TYPES
+from states.settings import BASE_VOLUME, GRENADE_EXPLOSION_SCALE, TILE_SIZE, TILE_TYPES
 
 class ContentLoader(object):
     def __init__(self):
@@ -22,7 +22,11 @@ class ContentLoader(object):
         self.grenade_explosion_images = None
 
         # Music
-        self.base_music = "public/audio/music2.mp3";
+        self.base_music_2 = "public/audio/music2.mp3";
+        self.base_music = "public/audio/music.mp3";
+        self.jump_sound = None
+        self.shot_sound = None
+        self.grenade_sound = None
     
     def get_bullet_image(self):
         if self.bullet_image == None:        
@@ -105,6 +109,27 @@ class ContentLoader(object):
             self.exit_btn_image = pygame.image.load("public/graphics/exit_btn.png").convert_alpha();
             print('start_btn_image img')
         return self.exit_btn_image
+
+    ###
+    # Sounds
+    ##
+    def get_shot_sound(self):
+        if self.shot_sound == None:
+            self.shot_sound = pygame.mixer.Sound("public/audio/shot.wav");
+            self.shot_sound.set_volume(BASE_VOLUME)
+        return self.shot_sound
+
+    def get_jump_sound(self):
+        if self.jump_sound == None:
+            self.jump_sound = pygame.mixer.Sound("public/audio/jump.wav");
+            self.jump_sound.set_volume(BASE_VOLUME)
+        return self.jump_sound
+
+    def get_grenade_sound(self):
+        if self.grenade_sound == None:
+            self.grenade_sound = pygame.mixer.Sound("public/audio/grenade.wav");
+            self.grenade_sound.set_volume(BASE_VOLUME)
+        return self.grenade_sound
 
     def get_world_images(self):
         if len(self.world_images) == 0:

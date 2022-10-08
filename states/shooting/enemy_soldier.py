@@ -46,7 +46,7 @@ class EnemySoldier(Soldier):
                 self.vision.center = (self.rect.centerx + (ENEMY_VISION_RANGE // 2) * self.direction, self.rect.centery)
                 
                 # ENEMY VISION RECTANGLE
-                # pygame.draw.rect(surface, COLORS.RED, self.vision)
+                #pygame.draw.rect(surface, COLORS.RED, self.vision)
 
                 # move direction
                 if self.move_counter > TILE_SIZE:

@@ -4,6 +4,7 @@ from states.content_loader import LOADER
 from states.shooting.button import Button
 
 from states.shooting.level_loader import LEVEL_LOADER
+from states.shooting.screen_fade import VERTICAL_SCREEN_FADE_DOWN, WHOLE_SCREEN_FADE, ScreenFade
 from states.shooting.word import World
 
 from ..base import BaseState
@@ -12,7 +13,6 @@ from states.settings import *
 
 class Shooter(BaseState):
     def __init__(self):
-
         super(Shooter, self).__init__()
         self.next_state = "MENU"
         self.start_game = False
@@ -29,6 +29,9 @@ class Shooter(BaseState):
     def startup(self, persistent):
         self.persist = persistent
 
+        self.intro_fade = ScreenFade(WHOLE_SCREEN_FADE, COLORS.BLACK, 6)
+        self.death_fade = ScreenFade(VERTICAL_SCREEN_FADE_DOWN, COLORS.PINK, 6)
+
         # create World
         self.create_world(1)
 
@@ -38,26 +41,25 @@ class Shooter(BaseState):
         exit_img = LOADER.get_exit_btn_image()
         self.exit_button = Button(int(SCREEN_WIDTH // 2) - int(exit_img.get_width() // 2), int(SCREEN_HEIGHT // 2 + 50), exit_img, 1)
         restart_img = LOADER.get_restart_btn_image()
-        self.restart_button = Button(int(SCREEN_WIDTH // 2) - int(restart_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), restart_img, 1)
-
-        # music
-        pygame.mixer.music.load(LOADER.base_music)
-        pygame.mixer.music.set_volume(BASE_VOLUME - 0.1)
-        pygame.mixer.music.play(-1, 0.0, 3000)
+        self.restart_button = Button(int(SCREEN_WIDTH // 2.5) - int(restart_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), restart_img, 3)
 
 
     def create_world(self, level):
+        # initialize a new world
         self.world = World()
-
         # Game levels
         self.level = level
+        # music
+        pygame.mixer.music.load(LOADER.base_music_2)
+        pygame.mixer.music.set_volume(BASE_VOLUME - 0.15)
+        pygame.mixer.music.play(-1, 0.0, 3000)
 
         wd = LEVEL_LOADER.get_level(self.level)
         self.world.process_data(wd.world_data)
 
 
     def draw(self, surface):
-
+        # draw start of game
         if self.start_game == False:
             # menu selection
             surface.fill(COLORS.bgColor)
@@ -70,23 +72,22 @@ class Shooter(BaseState):
         else:
             self.run_game(surface)
 
-
         if not self.world.player.alive:
             self.world.bg_scroll = 0
             self.world.screen_scroll = 0
-            # reset selection
-            if self.restart_button.draw(surface):
-                self.create_world(self.level)
+            if self.death_fade.run_effect(surface):
+                # reset fade counter to zero for next effect
+                self.death_fade.fade_counter = 0
+                # reset selection                
+                if self.restart_button.draw(surface):
+                    self.create_world(self.level)
             
         
     def run_game(self, surface):
-
         # draw background
         self.world.draw_bg(surface, COLORS.bgColor)
-
         # draw world map
         self.world.draw(surface)
-
         # update player actions
         level_complete = self.world.update_player_action(surface, self.moving_left, self.moving_right, self.shoot, self.grenade)
         if level_complete:
@@ -106,6 +107,7 @@ class Shooter(BaseState):
                 self.grenade = True
             if (event.key == pygame.K_w or event.key == pygame.K_UP) and self.world.player.alive and not self.world.player.in_air:
                 self.world.player.jump = True
+                LOADER.get_jump_sound().play()
             if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                 self.moving_left = True
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:

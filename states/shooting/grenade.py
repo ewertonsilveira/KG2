@@ -54,6 +54,7 @@ class Grenade(pygame.sprite.Sprite):
 
         self.timer -= 1
         if self.timer <= 0:
+            LOADER.get_grenade_sound().play()
             img = self.images[int(self.counter/10)]
             newRect = img.get_rect()            
             newRect.center = self.rect.center

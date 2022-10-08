@@ -9,5 +9,6 @@ class GameColors(object):
         self.WHITE = (255, 255, 255)
         self.GREEN = (0, 255, 0)
         self.BLACK = (0, 0, 0)
+        self.PINK = (235, 65, 54)
     
 COLORS = GameColors()

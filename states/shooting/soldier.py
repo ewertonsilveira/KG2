@@ -1,6 +1,7 @@
 from email.headerregistry import Group
 import pygame
 import os
+from states.content_loader import LOADER
 
 from states.shooting.bullet import Bullet
 
@@ -173,6 +174,7 @@ class Soldier(pygame.sprite.Sprite):
 
     def shoot(self, surface):
         if self.shoot_cooldown == 0 and self.ammo > 0:
+            LOADER.get_shot_sound().play()            
             self.shoot_cooldown = SHOOT_COOLDOWN_TIMER
             x = self.rect.centerx + (0.3 * self.rect.size[0] * self.direction)
             bullet = Bullet(surface, x, self.rect.centery, self.direction)
