@@ -6,7 +6,7 @@ class GameFonts(pygame.font.Font):
         self.secondary_font = None
 
     def init(self):
-        self.primary_font = pygame.font.Font('public/font/Pixeltype.ttf', 50)
+        self.primary_font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
         self.secondary_font = pygame.font.SysFont('Futura', 16)
 
 

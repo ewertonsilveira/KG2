@@ -17,7 +17,7 @@ class LevelLoader(object):
     def load_level(self, level):
         wd = WorldData()
         wd.init()
-        with open(f'level{level}_data.csv', newline='') as csvfile:
+        with open(f'assets/level{level}_data.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for x, row in enumerate(reader):
                 for y, tile in enumerate(row):

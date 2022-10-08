@@ -40,7 +40,7 @@ class Soldier(pygame.sprite.Sprite):
 
         for animation in ['idle', 'run', 'jump', 'death']:
             tmp_list = []
-            dir = f'public/graphics/{self.char_type}/{animation}'
+            dir = f'assets/graphics/{self.char_type}/{animation}'
             files = os.listdir(dir)
             files.sort()
             for filename in files:

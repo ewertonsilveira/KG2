@@ -30,8 +30,12 @@ states = {
     "GAME_OVER": GameOver(),
 }
 
-game = Game(screen, states, "SPLASH")
-game.run()
+def run_game():
+    game = Game(screen, states, "SPLASH")
+    game.run()
 
-pygame.quit()
-sys.exit()
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    run_game()

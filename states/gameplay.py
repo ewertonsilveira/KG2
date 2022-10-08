@@ -12,12 +12,12 @@ class Gameplay(BaseState):
         self.next_state = "MENU"
 
         self.snail_x_pos = self.screen_rect.width
-        self.sky_sf = pygame.image.load('public/graphics/sky.png').convert()
-        self.ground_sf = pygame.image.load('public/graphics/ground.png').convert()
-        self.snail_sf = pygame.image.load('public/graphics/snail/snail1.png').convert_alpha()
+        self.sky_sf = pygame.image.load('assets/graphics/sky.png').convert()
+        self.ground_sf = pygame.image.load('assets/graphics/ground.png').convert()
+        self.snail_sf = pygame.image.load('assets/graphics/snail/snail1.png').convert_alpha()
         self.snail_rect = self.snail_sf.get_rect(midbottom = (self.snail_x_pos, self.sky_sf.get_height()))
 
-        self.player_sf = pygame.image.load('public/graphics/player/player_walk_1.png').convert_alpha()
+        self.player_sf = pygame.image.load('assets/graphics/player/player_walk_1.png').convert_alpha()
         self.player_rect = self.player_sf.get_rect(midbottom = ((50, self.sky_sf.get_height())))
 
         self.text_sf = FONTS.primary_font.render('Start', False, 'Black')

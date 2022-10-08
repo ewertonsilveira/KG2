@@ -12,10 +12,10 @@ class Splash(BaseState):
         self.title = FONTS.primary_font.render("KYLIE GAMES", True, pygame.Color("black"))
         self.title_rect = self.title.get_rect(center=(x+15,y+20))
 
-        logo = pygame.image.load('public/graphics/logo.png').convert_alpha()
+        logo = pygame.image.load('assets/graphics/logo.png').convert_alpha()
         self.logo_sf = pygame.transform.scale(logo, (100,115))
  
-        bg = pygame.image.load('public/graphics/bg2.png').convert_alpha()
+        bg = pygame.image.load('assets/graphics/bg2.png').convert_alpha()
         self.bg_sf = pygame.transform.scale(bg, self.screen_rect.size)
 
         self.next_state = "MENU"
