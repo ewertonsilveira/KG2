@@ -12,8 +12,11 @@ class GameImageLoader(object):
         self.grenade_image = None
         self.ammo_box_image = None
         self.mountain_image = None
+        self.exit_btn_image = None
+        self.start_btn_image = None
         self.health_box_image = None
         self.health_box_image = None
+        self.restart_btn_image = None
         self.grenade_box_image = None
         self.grenade_explosion_images = None
     
@@ -80,6 +83,24 @@ class GameImageLoader(object):
             self.pine2_image = pygame.image.load("public/graphics/background/pine2.png").convert_alpha();
             print('pine2 img')
         return self.pine2_image
+    
+    def get_start_btn_image(self):
+        if self.start_btn_image == None:
+            self.start_btn_image = pygame.image.load("public/graphics/start_btn.png").convert_alpha();
+            print('start_btn_image img')
+        return self.start_btn_image
+
+    def get_restart_btn_image(self):
+        if self.restart_btn_image == None:
+            self.restart_btn_image = pygame.image.load("public/graphics/restart_btn.png").convert_alpha();
+            print('re-start_btn_image img')
+        return self.restart_btn_image
+
+    def get_exit_btn_image(self):
+        if self.exit_btn_image == None:
+            self.exit_btn_image = pygame.image.load("public/graphics/exit_btn.png").convert_alpha();
+            print('start_btn_image img')
+        return self.exit_btn_image
 
     def get_world_images(self):
         if len(self.world_images) == 0:

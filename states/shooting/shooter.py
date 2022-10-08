@@ -4,6 +4,7 @@ import os
 from states.colors import COLORS
 from states.fonts import FONTS
 from states.game_images import GAME_IMAGES
+from states.shooting.button import Button
 from states.shooting.enemy_soldier import EnemySoldier
 from states.shooting.health_bar import HealthBar
 
@@ -21,10 +22,21 @@ class Shooter(BaseState):
     def __init__(self):
         super(Shooter, self).__init__()
         self.next_state = "MENU"
+        self.start_game = False
+
+        # group of enemies
         self.enemies = []
 
         # Game levels
         self.level = 1
+
+        # buttons
+        start_img = GAME_IMAGES.get_start_btn_image()
+        self.start_button = Button(int(SCREEN_WIDTH // 2) - int(start_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), start_img, 1)
+
+        exit_img = GAME_IMAGES.get_exit_btn_image()
+        self.exit_button = Button(int(SCREEN_WIDTH // 2) - int(exit_img.get_width() // 2), int(SCREEN_HEIGHT // 2 + 50), exit_img, 1)
+
 
         # player action variables
         self.moving_left = False
@@ -40,6 +52,19 @@ class Shooter(BaseState):
 
 
     def draw(self, surface):
+
+        if not self.start_game:
+            # menu selection
+            surface.fill(COLORS.bgColor)
+            if self.start_button.draw(surface):
+                self.start_game =  True
+
+            if self.exit_button.draw(surface):
+                self.done = True
+        else:
+            self.run_game(surface)
+        
+    def run_game(self, surface):
 
         # draw background
         self.world.draw_bg(surface, COLORS.bgColor)
@@ -98,7 +123,13 @@ class Shooter(BaseState):
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.moving_right = False
             if event.key == pygame.K_ESCAPE:
-                self.done = True
+                if self.start_game == False:
+                    self.done = True
+                else:
+                    self.start_game = False
+            if event.key == pygame.K_RETURN:
+                if self.start_game == False:
+                    self.start_game = True
     
 
             

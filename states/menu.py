@@ -42,6 +42,6 @@ class Menu(BaseState):
 
     def draw(self, surface):
         self.draw_bg(surface, self.bgColor)
-        for index, option in enumerate(self.options):
+        for index, _ in enumerate(self.options):
             text_render = self.render_text(index)
             surface.blit(text_render, self.get_text_position(text_render, index))
