@@ -92,7 +92,7 @@ class Soldier(pygame.sprite.Sprite):
             self.direction = 1
 
         # jump
-        if self.jump == True and not self.in_air:
+        if self.jump == True and self.in_air == False:
             self.vel_y = SOLDIER_JUMP_POWER
             self.jump = False
             self.in_air = True
@@ -125,6 +125,9 @@ class Soldier(pygame.sprite.Sprite):
                     self.in_air = False
                     dy = tile[1].top - self.rect.bottom
 
+        # check if player fallen off the map
+        if self.rect.bottom > SCREEN_HEIGHT:
+            self.health = 0
         
         # check if going off the edge of screen
         if self.char_type == PLAYER_TYPE:

@@ -27,16 +27,13 @@ class Shooter(BaseState):
         # group of enemies
         self.enemies = []
 
-        # Game levels
-        self.level = 1
-
         # buttons
         start_img = GAME_IMAGES.get_start_btn_image()
         self.start_button = Button(int(SCREEN_WIDTH // 2) - int(start_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), start_img, 1)
-
         exit_img = GAME_IMAGES.get_exit_btn_image()
         self.exit_button = Button(int(SCREEN_WIDTH // 2) - int(exit_img.get_width() // 2), int(SCREEN_HEIGHT // 2 + 50), exit_img, 1)
-
+        restart_img = GAME_IMAGES.get_restart_btn_image()
+        self.restart_button = Button(int(SCREEN_WIDTH // 2) - int(restart_img.get_width() // 2), int(SCREEN_HEIGHT // 2 - 100), restart_img, 1)
 
         # player action variables
         self.moving_left = False
@@ -45,15 +42,20 @@ class Shooter(BaseState):
         self.grenade = False
 
         # create World
+        self.create_world(1)
+
+    def create_world(self, level):
         self.world = World()
+
+        # Game levels
+        self.level = level
 
         wd = LEVEL_LOADER.get_level(self.level)
         self.world.process_data(wd.world_data)
 
-
     def draw(self, surface):
 
-        if not self.start_game:
+        if self.start_game == False:
             # menu selection
             surface.fill(COLORS.bgColor)
             if self.start_button.draw(surface):
@@ -94,6 +96,9 @@ class Shooter(BaseState):
         else:
             self.world.bg_scroll = 0
             self.world.screen_scroll = 0
+            # reset selection
+            if self.restart_button.draw(surface):
+                self.create_world(self.level)
         
 
     def get_event(self, event):
