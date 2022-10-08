@@ -76,7 +76,7 @@ class Soldier(pygame.sprite.Sprite):
         self.grenade_group.update(screen_scroll, obstacle_list, self, enemies)
         self.grenade_group.draw(surface)
 
-    def move(self, bg_scroll, level_length, obstacle_list, moving_left, moving_right):
+    def move(self, bg_scroll, level_length, water_group, exit_group, obstacle_list, moving_left, moving_right):
         # reset movement variables
         dx = 0
         dy = 0
@@ -124,6 +124,15 @@ class Soldier(pygame.sprite.Sprite):
                     self.vel_y = 0
                     self.in_air = False
                     dy = tile[1].top - self.rect.bottom
+
+        #check for collision with water
+        if pygame.sprite.spritecollide(self, water_group, False):
+            self.health = 0
+
+        #check for collision with exit
+        level_complete = False
+        if pygame.sprite.spritecollide(self, exit_group, False):
+            level_complete = True
 
         # check if player fallen off the map
         if self.rect.bottom > SCREEN_HEIGHT:

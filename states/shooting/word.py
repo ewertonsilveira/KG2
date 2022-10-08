@@ -80,7 +80,7 @@ class World(object):
 
         # draw enemies
         for _, enemy in enumerate(self.enemies):
-            enemy.ai(surface, self.bg_scroll, self.level_length, self.screen_scroll, self.obstacle_list, self.player)
+            enemy.ai(surface, self.bg_scroll, self.level_length, self.screen_scroll,self.water_group, self.exit_group, self.obstacle_list, self.player)
             enemy.draw(surface)
             enemy.update(surface, self.screen_scroll, self.obstacle_list, [self.player])            
         
@@ -97,8 +97,6 @@ class World(object):
         # show grenades
         self.draw_text(surface, 'GRENADES:', FONTS.secondary_font, COLORS.WHITE, 10, 60)
         for x in range(self.player.grenade): surface.blit(GAME_IMAGES.get_grenade_image(), (125 + (x * 15), 60))
-
-
 
         self.item_box_group.update(self.screen_scroll, self.player)
         self.item_box_group.draw(surface)
@@ -158,5 +156,5 @@ class World(object):
             else:
                 self.player.update_action(0) #1 idle
 
-            self.screen_scroll = self.player.move(self.bg_scroll, self.level_length, self.obstacle_list, moving_left, moving_right)
+            self.screen_scroll = self.player.move(self.bg_scroll, self.level_length, self.water_group, self.exit_group, self.obstacle_list, moving_left, moving_right)
             self.bg_scroll -= self.screen_scroll 
