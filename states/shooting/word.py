@@ -68,6 +68,10 @@ class World(object):
                         self.item_box_group.add(ItemBox(HEALTH, x_axis, y_axis))
                     elif tile == 20:
                         self.exit_group.add(Exit(img, x_axis, y_axis))
+                    elif tile == 21:
+                        # item health ammo
+                        self.enemies.append(self.create_enemies(x_axis, y_axis))
+
 
 
         return self.player, self.health_bar, self.enemies
@@ -130,6 +134,9 @@ class World(object):
     def draw_text(self, surface, text, font, text_col, x, y):
         img = font.render(text, True, text_col)
         surface.blit(img, (x, y))
+
+    def create_skeleton(self, x, y):
+        return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
 
     def create_enemies(self, x, y):
         return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)

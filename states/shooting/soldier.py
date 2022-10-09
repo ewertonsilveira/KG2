@@ -9,6 +9,7 @@ from states.settings import *
 from states.shooting.grenade import Grenade 
 
 ENEMY_TYPE='enemy'
+SKELETON_TYPE='skeleton'
 PLAYER_TYPE='player'
 
 class Soldier(pygame.sprite.Sprite):
