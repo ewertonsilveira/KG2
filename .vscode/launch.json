@@ -12,6 +12,15 @@
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}",
             "justMyCode": true,
+        },
+        {
+            "name": "Level Editor",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/level_editor_tut.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
         }
     ]
 }

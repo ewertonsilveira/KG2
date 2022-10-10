@@ -1,7 +1,7 @@
 import pygame
+from states.button import Button
 from states.colors import COLORS
 from states.content_loader import LOADER
-from states.shooting.button import Button
 
 from states.shooting.level_loader import LEVEL_LOADER
 from states.shooting.screen_fade import VERTICAL_SCREEN_FADE_DOWN, WHOLE_SCREEN_FADE, ScreenFade
