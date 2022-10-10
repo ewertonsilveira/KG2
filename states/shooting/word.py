@@ -9,7 +9,7 @@ from states.shooting.enemy_soldier import EnemySoldier
 from states.shooting.exit import Exit
 from states.shooting.health_bar import HealthBar
 from states.shooting.item_box import AMMO, GRENADE, HEALTH, ItemBox
-from states.shooting.soldier import ENEMY_TYPE, PLAYER_TYPE, Soldier
+from states.shooting.soldier import ENEMY_TYPE, PLAYER_TYPE, SKELETON_TYPE, Soldier
 from states.shooting.water import Water
 
 
@@ -68,9 +68,9 @@ class World(object):
                         self.item_box_group.add(ItemBox(HEALTH, x_axis, y_axis))
                     elif tile == 20:
                         self.exit_group.add(Exit(img, x_axis, y_axis))
-                    elif tile == 21:
-                        # item health ammo
-                        self.enemies.append(self.create_enemies(x_axis, y_axis))
+                    elif tile > 21 and tile < 26:
+                        # decoration
+                        self.decoration_group.add(Decoration(img, x_axis, y_axis))
 
 
 
@@ -135,8 +135,8 @@ class World(object):
         img = font.render(text, True, text_col)
         surface.blit(img, (x, y))
 
-    def create_skeleton(self, x, y):
-        return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
+    # def create_skeleton(self, x, y):
+    #     return EnemySoldier(SKELETON_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)
 
     def create_enemies(self, x, y):
         return EnemySoldier(ENEMY_TYPE, x, y, ENEMY_BASE_HEALTH, PLAYERS_SCALE, ENEMY_RUN_SPEED, 1, ENEMY_INITIAL_BULLETS, ENEMY_INITIAL_GRENADES)

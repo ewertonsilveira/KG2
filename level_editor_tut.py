@@ -23,8 +23,8 @@ pygame.display.set_caption('Level Editor')
 ROWS = 16
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 21
-level = 0
+TILE_TYPES = 26
+level = 1
 current_tile = 0
 scroll_left = False
 scroll_right = False
