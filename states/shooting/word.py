@@ -68,7 +68,7 @@ class World(object):
                         self.item_box_group.add(ItemBox(HEALTH, x_axis, y_axis))
                     elif tile == 20:
                         self.exit_group.add(Exit(img, x_axis, y_axis))
-                    elif tile > 21 and tile < 26:
+                    elif tile >= 21 and tile <= 26:
                         # decoration
                         self.decoration_group.add(Decoration(img, x_axis, y_axis))
 
