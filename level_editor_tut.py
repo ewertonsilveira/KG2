@@ -113,6 +113,13 @@ def save_world():
 		for row in world_data:
 			writer.writerow(row)
 
+def load_level():
+	with open(f'assets/level{level}_data.csv', newline='') as csvfile:
+		reader = csv.reader(csvfile, delimiter = ',')
+		for x, row in enumerate(reader):
+			for y, tile in enumerate(row):
+				world_data[x][y] = int(tile)
+
 #create buttons
 save_button = Button(SCREEN_WIDTH // 2, SCREEN_HEIGHT + LOWER_MARGIN - 50, save_img, 1)
 load_button = Button(SCREEN_WIDTH // 2 + 200, SCREEN_HEIGHT + LOWER_MARGIN - 50, load_img, 1)
@@ -154,11 +161,7 @@ while run:
 			#load in level data
 			#reset scroll back to the start of the level
 			scroll = 0
-			with open(f'assets/level{level}_data.csv', newline='') as csvfile:
-				reader = csv.reader(csvfile, delimiter = ',')
-				for x, row in enumerate(reader):
-					for y, tile in enumerate(row):
-						world_data[x][y] = int(tile)
+			load_level()
 			#alternative pickle method
 			#world_data = []
 			#pickle_in = open(f'level{level}_data', 'rb')

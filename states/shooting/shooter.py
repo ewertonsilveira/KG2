@@ -126,6 +126,14 @@ class Shooter(BaseState):
                 self.moving_right = True
 
         elif event.type == pygame.KEYUP:
+            print(event.key)
+            if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
+                print('k',event.key)
+                if self.start_intro == False:
+                    self.create_world(self.level)
+                    self.start_game =  True
+                    self.start_intro = True
+                    
             if event.key == pygame.K_SPACE:
                 self.shoot = False
             if event.key == pygame.K_q:
