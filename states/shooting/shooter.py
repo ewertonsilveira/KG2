@@ -34,7 +34,7 @@ class Shooter(BaseState):
         self.death_fade = ScreenFade(VERTICAL_SCREEN_FADE_DOWN, COLORS.PINK, 6)
 
         # create World
-        self.create_world(1)
+        self.create_world(4)
 
         # buttons
         start_img = LOADER.get_start_btn_image()

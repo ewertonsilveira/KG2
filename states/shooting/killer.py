@@ -1,7 +1,7 @@
 import pygame
 from states.settings import * 
 
-class Water(pygame.sprite.Sprite):
+class KillerItem(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = img

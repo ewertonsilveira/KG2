@@ -10,7 +10,7 @@ from states.shooting.exit import Exit
 from states.shooting.health_bar import HealthBar
 from states.shooting.item_box import AMMO, GRENADE, HEALTH, ItemBox
 from states.shooting.soldier import ENEMY_TYPE, PLAYER_TYPE, SKELETON_TYPE, Soldier
-from states.shooting.water import Water
+from states.shooting.killer import KillerItem
 
 
 class World(object):
@@ -23,7 +23,7 @@ class World(object):
         self.screen_scroll = 0
         self.level_length = 0
         self.exit_group = pygame.sprite.Group()
-        self.water_group = pygame.sprite.Group()
+        self.killer_group = pygame.sprite.Group()
         self.item_box_group = pygame.sprite.Group()
         self.decoration_group = pygame.sprite.Group()
 
@@ -46,20 +46,14 @@ class World(object):
                         self.obstacle_list.append(tile_data)
                     elif tile >= 9 and tile <= 10:
                         # water
-                        self.water_group.add(Water(img, x_axis, y_axis))
+                        self.killer_group.add(KillerItem(img, x_axis, y_axis))
                     elif tile >= 11 and tile <= 14:
                         # decoration
-                        self.decoration_group.add(Decoration(img, x_axis, y_axis))
+                        self.decoration_group.add(Decoration(img, 1, x_axis, y_axis))
                     elif tile == 15:
                         # player
                         self.player = self.create_player(x_axis, y_axis)
                         self.health_bar = self.create_health_bar() 
-                    elif tile == 16:
-                        # enemy
-                        self.enemies.append(self.create_enemies(x_axis, y_axis))
-                    elif tile == 17:
-                        # item ammo
-                        self.item_box_group.add(ItemBox(AMMO, x_axis, y_axis))
                     elif tile == 18:
                         # item grenade 
                         self.item_box_group.add(ItemBox(GRENADE, x_axis, y_axis))
@@ -68,10 +62,32 @@ class World(object):
                         self.item_box_group.add(ItemBox(HEALTH, x_axis, y_axis))
                     elif tile == 20:
                         self.exit_group.add(Exit(img, x_axis, y_axis))
-                    elif tile >= 21 and tile <= 31:
-                        # decoration
-                        self.decoration_group.add(Decoration(img, x_axis, y_axis))
+                    elif (tile >= 21 and tile <= 23):
+                        # snow decoration
+                        self.decoration_group.add(Decoration(img, 1.2, x_axis, y_axis))
+                    elif tile >= 24 and tile <= 31:
+                        # cold water and spikes
+                        self.killer_group.add(KillerItem(img, x_axis, y_axis))
+                    elif tile >= 32 and tile <= 42: # cold tiles
+                        self.obstacle_list.append(tile_data)
+                    elif (tile >= 43 and tile <= 45):
+                        # stairs
+                        self.decoration_group.add(Decoration(img, 1, x_axis, y_axis))
+                    elif tile == 46:
+                        # tree
+                        self.decoration_group.add(Decoration(img, 2, x_axis, y_axis))
+                    elif tile > 46 and tile <= 50:
+                        # fruit and  coins
+                        self.decoration_group.add(Decoration(img, 0.5, x_axis, y_axis))
+                    
 
+                    # Player and Enemis has to be last
+                    elif tile == 16:
+                        # enemy
+                        self.enemies.append(self.create_enemies(x_axis, y_axis))
+                    elif tile == 17:
+                        # item ammo
+                        self.item_box_group.add(ItemBox(AMMO, x_axis, y_axis))
 
 
         return self.player, self.health_bar, self.enemies
@@ -84,7 +100,7 @@ class World(object):
 
         # draw enemies
         for _, enemy in enumerate(self.enemies):
-            enemy.ai(surface, self.bg_scroll, self.level_length, self.screen_scroll,self.water_group, self.exit_group, self.obstacle_list, self.player)
+            enemy.ai(surface, self.bg_scroll, self.level_length, self.screen_scroll,self.killer_group, self.exit_group, self.obstacle_list, self.player)
             enemy.draw(surface)
             enemy.update(surface, self.screen_scroll, self.obstacle_list, [self.player])            
         
@@ -108,8 +124,8 @@ class World(object):
         self.exit_group.update(self.screen_scroll)
         self.exit_group.draw(surface)
 
-        self.water_group.update(self.screen_scroll)
-        self.water_group.draw(surface)
+        self.killer_group.update(self.screen_scroll)
+        self.killer_group.draw(surface)
 
         self.decoration_group.update(self.screen_scroll)
         self.decoration_group.draw(surface)
@@ -163,7 +179,7 @@ class World(object):
             else:
                 self.player.update_action(0) #1 idle
 
-            self.screen_scroll, self.level_complete = self.player.move(self.bg_scroll, self.level_length, self.water_group, self.exit_group, self.obstacle_list, moving_left, moving_right)
+            self.screen_scroll, self.level_complete = self.player.move(self.bg_scroll, self.level_length, self.killer_group, self.exit_group, self.obstacle_list, moving_left, moving_right)
             self.bg_scroll -= self.screen_scroll
 
         return self.level_complete
