@@ -1,21 +1,28 @@
 import pygame
 import csv
-import pickle
+
+from collections import namedtuple
 
 from states.button import Button
+from states.settings import FPS, TILE_TYPES
 
 pygame.init()
 
-clock = pygame.time.Clock()
-FPS = 60
 
 #game window
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 640
 LOWER_MARGIN = 100
-SIDE_MARGIN = 300
+SIDE_MARGIN = 420
 
-screen = pygame.display.set_mode((SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN))
+SCREEN_WIDTH = 920
+SCREEN_HEIGHT = 640
+
+clock = pygame.time.Clock()
+
+
+Size = namedtuple('Size',"width height")
+ScreenSize = Size(SCREEN_WIDTH + SIDE_MARGIN, SCREEN_HEIGHT + LOWER_MARGIN)
+
+screen = pygame.display.set_mode(ScreenSize)
 pygame.display.set_caption('Level Editor')
 
 
@@ -23,7 +30,6 @@ pygame.display.set_caption('Level Editor')
 ROWS = 16
 MAX_COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
-TILE_TYPES = 26
 level = 1
 current_tile = 0
 scroll_left = False
@@ -54,7 +60,7 @@ WHITE = (255, 255, 255)
 RED = (200, 25, 25)
 
 #define font
-font = pygame.font.SysFont('Futura', 30)
+font = pygame.font.SysFont('Futura', 24)
 
 #create empty tile list
 world_data = []
@@ -78,10 +84,10 @@ def draw_bg():
 	screen.fill(GREEN)
 	width = sky_img.get_width()
 	for x in range(4):
-		screen.blit(sky_img, ((x * width) - scroll * 0.5, 0))
-		screen.blit(mountain_img, ((x * width) - scroll * 0.6, SCREEN_HEIGHT - mountain_img.get_height() - 300))
-		screen.blit(pine1_img, ((x * width) - scroll * 0.7, SCREEN_HEIGHT - pine1_img.get_height() - 150))
-		screen.blit(pine2_img, ((x * width) - scroll * 0.8, SCREEN_HEIGHT - pine2_img.get_height()))
+		screen.blit(sky_img, 		((x * width) - scroll * 0.5, 0))
+		screen.blit(mountain_img, 	((x * width) - scroll * 0.6, SCREEN_HEIGHT - mountain_img.get_height() - 300))
+		screen.blit(pine1_img, 		((x * width) - scroll * 0.7, SCREEN_HEIGHT - pine1_img.get_height() - 150))
+		screen.blit(pine2_img, 		((x * width) - scroll * 0.8, SCREEN_HEIGHT - pine2_img.get_height()))
 
 #draw grid
 def draw_grid():
@@ -110,10 +116,10 @@ button_list = []
 button_col = 0
 button_row = 0
 for i in range(len(img_list)):
-	tile_button = Button(SCREEN_WIDTH + (75 * button_col) + 50, 75 * button_row + 50, img_list[i], 1)
+	tile_button = Button(SCREEN_WIDTH + (55 * button_col) + 15, 55 * button_row + 15, img_list[i], 1)
 	button_list.append(tile_button)
 	button_col += 1
-	if button_col == 3:
+	if button_col == 7:
 		button_row += 1
 		button_col = 0
 
@@ -180,14 +186,18 @@ while run:
 	x = (pos[0] + scroll) // TILE_SIZE
 	y = pos[1] // TILE_SIZE
 
-	#check that the coordinates are within the tile area
-	if pos[0] < SCREEN_WIDTH and pos[1] < SCREEN_HEIGHT:
+	try:
+		#check that the coordinates are within the tile area
+		if pos[0] < SCREEN_WIDTH and pos[1] < SCREEN_HEIGHT:
 		#update tile value
-		if pygame.mouse.get_pressed()[0] == 1:
-			if world_data[y][x] != current_tile:
-				world_data[y][x] = current_tile
-		if pygame.mouse.get_pressed()[2] == 1:
-			world_data[y][x] = -1
+			if pygame.mouse.get_pressed()[0] == 1:
+				if world_data[y][x] != current_tile:
+					world_data[y][x] = current_tile
+			if pygame.mouse.get_pressed()[2] == 1:
+				world_data[y][x] = -1
+	except:
+		print("Exception manipulating tile", current_tile)
+	
 
 
 	for event in pygame.event.get():

@@ -1,11 +1,13 @@
 import pygame
 
+from states.settings import FPS
+
 class Game(object):
     def __init__(self, screen, states, start_state):
         self.done = False
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.fps = 60
+        self.fps = FPS
         self.states = states
         self.state_name = start_state
         self.state = self.states[self.state_name]
