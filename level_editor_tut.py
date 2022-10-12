@@ -106,7 +106,12 @@ def draw_world():
 			if tile >= 0:
 				screen.blit(img_list[tile], (x * TILE_SIZE - scroll, y * TILE_SIZE))
 
-
+def save_world():
+	#save level data
+	with open(f'assets/level{level}_data.csv', 'w', newline='') as csvfile:
+		writer = csv.writer(csvfile, delimiter = ',')
+		for row in world_data:
+			writer.writerow(row)
 
 #create buttons
 save_button = Button(SCREEN_WIDTH // 2, SCREEN_HEIGHT + LOWER_MARGIN - 50, save_img, 1)
@@ -140,11 +145,7 @@ while run:
 
 		#save and load data
 		if save_button.draw(screen):
-			#save level data
-			with open(f'assets/level{level}_data.csv', 'w', newline='') as csvfile:
-				writer = csv.writer(csvfile, delimiter = ',')
-				for row in world_data:
-					writer.writerow(row)
+			save_world()
 			#alternative pickle method
 			#pickle_out = open(f'level{level}_data', 'wb')
 			#pickle.dump(world_data, pickle_out)
@@ -215,7 +216,7 @@ while run:
 					scroll_left = True
 				if event.key == pygame.K_RIGHT:
 					scroll_right = True
-				if event.key == pygame.K_RSHIFT:
+				if event.key == pygame.K_RSHIFT or event.key == pygame.K_LSHIFT:
 					scroll_speed = 5
 
 
@@ -226,6 +227,8 @@ while run:
 					scroll_right = False
 				if event.key == pygame.K_RSHIFT:
 					scroll_speed = 1
+				if event.key == pygame.K_KP_ENTER or event.key == pygame.K_KP_ENTER:
+					save_world()
 
 
 		pygame.display.update()
